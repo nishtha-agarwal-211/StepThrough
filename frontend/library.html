@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guide Library | StepThrough</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    .cat-tabs { display: flex; gap: 1rem; overflow-x: auto; padding-bottom: 1rem; margin-bottom: 2rem; border-bottom: 1px solid var(--border); }
+    .cat-tab { padding: 0.5rem 1rem; cursor: pointer; white-space: nowrap; color: var(--text-light); border-bottom: 2px solid transparent; font-weight: 500; }
+    .cat-tab.active { color: var(--primary); border-bottom-color: var(--primary); }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="container nav-content">
+      <a href="/" class="logo">StepThrough</a>
+      <div class="nav-links">
+        <a href="/dashboard.html" class="btn btn-outline">Dashboard</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container" style="padding: 3rem 0;">
+    
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
+      <h1 style="color: var(--primary);">Guide Library</h1>
+      <div class="search-container" style="max-width: 400px; margin: 0; flex-grow: 1;">
+        <input type="text" id="libSearch" placeholder="Search guides..." style="padding: 0.75rem 1.5rem; font-size: 1rem;">
+      </div>
+    </div>
+
+    <div class="cat-tabs" id="catTabs">
+      <div class="cat-tab active" data-cat="all">All</div>
+      <div class="cat-tab" data-cat="government">Government</div>
+      <div class="cat-tab" data-cat="education">Education</div>
+      <div class="cat-tab" data-cat="technology">Technology</div>
+      <div class="cat-tab" data-cat="finance">Finance</div>
+      <div class="cat-tab" data-cat="career">Career</div>
+      <div class="cat-tab" data-cat="legal">Legal</div>
+      <div class="cat-tab" data-cat="health">Health</div>
+      <div class="cat-tab" data-cat="lifestyle">Lifestyle</div>
+    </div>
+
+    <div id="guidesGrid" class="grid grid-3">
+      <div class="spinner text-center" style="grid-column: 1 / -1; margin: 4rem auto;"></div>
+    </div>
+
+  </main>
+
+  <script src="/js/ui.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/auth.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const grid = document.getElementById('guidesGrid');
+      const searchInput = document.getElementById('libSearch');
+      
+      const loadGuides = async (endpoint) => {
+        try {
+          UI.showSpinner('guidesGrid');
+          const res = await window.API.call(endpoint);
+          const guides = res.data;
+          
+          if(guides.length === 0) {
+            grid.innerHTML = `<div class="card text-center" style="grid-column: 1/-1;">No guides found.</div>`;
+            return;
+          }
+
+          grid.innerHTML = guides.map(g => `
+            <div class="card" style="display: flex; flex-direction: column;">
+              <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
+                <span class="badge badge-category" style="text-transform: capitalize;">${g.category}</span>
+                <span class="badge badge-${g.difficulty}">${g.difficulty}</span>
+              </div>
+              <h3 style="margin-bottom: 0.5rem; color: var(--primary); font-size: 1.1rem;">${g.title}</h3>
+              <p style="font-size: 0.9rem; flex-grow: 1; margin-bottom: 1rem;">${g.shortDesc}</p>
+              
+              <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border); padding-top: 1rem; margin-bottom: 1rem;">
+                <span style="font-size: 0.8rem; color: var(--text-light);">⏱ ${g.estimatedTime || 'N/A'}</span>
+                <span style="font-size: 0.8rem; color: var(--text-light);">🔖 ${g.saves} saves</span>
+              </div>
+              
+              <a href="/guide.html?slug=${g.slug}" class="btn btn-outline" style="width: 100%;">View Guide</a>
+            </div>
+          `).join('');
+        } catch (err) {
+          grid.innerHTML = `<div class="card error" style="grid-column: 1/-1;">Failed to load guides.</div>`;
+        }
+      };
+
+      loadGuides('/guides');
+
+      document.querySelectorAll('.cat-tab').forEach(tab => {
+        tab.addEventListener('click', (e) => {
+          document.querySelectorAll('.cat-tab').forEach(t => t.classList.remove('active'));
+          e.target.classList.add('active');
+          const cat = e.target.dataset.cat;
+          if(cat === 'all') loadGuides('/guides');
+          else loadGuides(`/guides/category/${cat}`);
+        });
+      });
+
+      searchInput.addEventListener('input', (e) => {
+        const q = e.target.value.trim();
+        if(q.length > 2) {
+          loadGuides(`/guides/search?q=${encodeURIComponent(q)}`);
+          document.querySelectorAll('.cat-tab').forEach(t => t.classList.remove('active'));
+        } else if (q.length === 0) {
+          loadGuides('/guides');
+          document.querySelector('.cat-tab[data-cat="all"]').classList.add('active');
+        }
+      });
+    });
+  </script>
+</body>
+</html>

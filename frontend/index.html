@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StepThrough | Any goal. Any system. Step by step.</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="container nav-content">
+      <a href="/" class="logo">StepThrough</a>
+      <div class="nav-links" id="navLinks">
+        <a href="/library.html">Library</a>
+        <a href="/login.html" class="btn btn-outline">Login</a>
+        <a href="/register.html" class="btn btn-primary">Sign Up</a>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <section class="hero container">
+      <h1 class="hero-title">Any goal. Any system.<br><span style="color: var(--ai-color);">Step by step.</span></h1>
+      <p class="hero-subtitle">Type anything you want to achieve. Our AI will generate a complete, actionable roadmap for you instantly, or browse our curated library.</p>
+      
+      <div class="search-container">
+        <input type="text" id="goalInput" placeholder="What do you want to achieve?">
+        <button id="generateBtn" class="btn btn-ai">Generate Guide</button>
+      </div>
+
+      <div class="chips-container">
+        <span class="chip" onclick="fillSearch('Apply for passport in India')">Apply for passport</span>
+        <span class="chip" onclick="fillSearch('Learn Python from scratch')">Learn Python</span>
+        <span class="chip" onclick="fillSearch('Register a startup')">Start a business</span>
+        <span class="chip" onclick="fillSearch('Apply for a master\\'s abroad')">Get a scholarship</span>
+        <span class="chip" onclick="fillSearch('File an RTI application')">File an RTI</span>
+      </div>
+    </section>
+
+    <section class="container" style="padding: 4rem 0;">
+      <h2 class="text-center" style="margin-bottom: 3rem;">How it works</h2>
+      <div class="grid grid-3 text-center">
+        <div>
+          <div style="font-size: 3rem; margin-bottom: 1rem;">🎯</div>
+          <h3>1. Define your goal</h3>
+          <p>Tell us exactly what you're trying to do. Be as specific as possible.</p>
+        </div>
+        <div>
+          <div style="font-size: 3rem; margin-bottom: 1rem;">🤖</div>
+          <h3>2. AI creates the map</h3>
+          <p>Our intelligent system breaks your complex goal into small, manageable steps.</p>
+        </div>
+        <div>
+          <div style="font-size: 3rem; margin-bottom: 1rem;">✅</div>
+          <h3>3. Follow and complete</h3>
+          <p>Check off steps, read warnings, use resources, and reach your goal.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="/js/ui.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/auth.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Setup Nav
+      if (Auth.isAuthenticated()) {
+        const user = Auth.getUser();
+        document.getElementById('navLinks').innerHTML = `
+          <a href="/library.html">Library</a>
+          <a href="/dashboard.html" class="btn btn-outline">Dashboard</a>
+          ${user.role === 'admin' ? '<a href="/admin.html" class="btn btn-outline">Admin Panel</a>' : ''}
+          <button onclick="Auth.logout()" class="btn btn-outline" style="border:none;color:var(--danger);">Logout</button>
+        `;
+      }
+
+      // Handle Search/Generate
+      const btn = document.getElementById('generateBtn');
+      const input = document.getElementById('goalInput');
+
+      window.fillSearch = (text) => {
+        input.value = text;
+        input.focus();
+      };
+
+      const handleGenerate = () => {
+        const query = input.value.trim();
+        if(!query) return UI.showToast('Please enter a goal first.', 'error');
+        if(!Auth.isAuthenticated()) {
+          UI.showToast('Please login to use AI Guide Generation.', 'error');
+          setTimeout(() => window.location.href = '/login.html', 1500);
+          return;
+        }
+        window.location.href = `/search.html?q=${encodeURIComponent(query)}`;
+      };
+
+      btn.addEventListener('click', handleGenerate);
+      input.addEventListener('keypress', (e) => {
+        if(e.key === 'Enter') handleGenerate();
+      });
+    });
+  </script>
+</body>
+</html>

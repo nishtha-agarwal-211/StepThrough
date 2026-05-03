@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guide | StepThrough</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    .progress-sticky { position: sticky; top: 4rem; z-index: 40; background: white; padding: 1rem 0; border-bottom: 1px solid var(--border); }
+    .progress-bar-bg { height: 8px; background: var(--border); border-radius: 999px; overflow: hidden; margin-top: 0.5rem; }
+    .progress-bar-fill { height: 100%; background: var(--success); width: 0%; transition: width 0.3s ease; }
+    .step-card { margin-bottom: 2rem; position: relative; padding-left: 3rem; }
+    .step-number { position: absolute; left: 0; top: 0; width: 2.5rem; height: 2.5rem; background: var(--background); border: 2px solid var(--border); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; color: var(--text-light); transition: var(--transition); }
+    .step-card.completed .step-number { background: var(--success); border-color: var(--success); color: white; }
+    .step-card.completed .card { border-color: var(--success); opacity: 0.8; }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="container nav-content">
+      <a href="/" class="logo">StepThrough</a>
+      <div class="nav-links">
+        <a href="/library.html" class="btn btn-outline" style="border:none;">Library</a>
+        <a href="/dashboard.html" class="btn btn-outline">Dashboard</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="progress-sticky">
+    <div class="container">
+      <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.875rem; font-weight: 600;">
+        <span id="progText">Progress: 0%</span>
+        <button id="saveTopBtn" class="btn btn-outline" style="padding: 0.25rem 0.75rem; font-size: 0.75rem;">Save Guide</button>
+      </div>
+      <div class="progress-bar-bg">
+        <div id="progFill" class="progress-bar-fill"></div>
+      </div>
+    </div>
+  </div>
+
+  <main class="container" style="padding: 3rem 0; max-width: 800px;">
+    
+    <div id="guideHeader" style="margin-bottom: 3rem;">
+      <div class="spinner"></div>
+    </div>
+
+    <div id="guideSteps"></div>
+
+  </main>
+
+  <script src="/js/ui.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/guide.js"></script>
+</body>
+</html>

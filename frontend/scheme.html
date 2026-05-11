@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scheme Details | StepThrough</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="container nav-content">
+      <a href="/" class="logo">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        StepThrough
+      </a>
+      <div id="nav-actions">
+        <a href="/dashboard.html" class="btn btn-outline">Dashboard</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container" style="padding: 3rem 0; max-width: 800px;">
+    <div id="schemeContent">
+      <div class="spinner" style="margin: 4rem auto; display: block;"></div>
+    </div>
+  </main>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/auth.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const schemeId = urlParams.get('id');
+      if (!schemeId) window.location.href = '/dashboard.html';
+
+      const content = document.getElementById('schemeContent');
+
+      try {
+        const res = await window.API.call(`/schemes/${schemeId}`);
+        const s = res.data;
+
+        content.innerHTML = `
+          <div style="margin-bottom: 2rem;">
+            <a href="javascript:history.back()" style="color: var(--primary); font-weight: 500;">&larr; Back</a>
+          </div>
+
+          <h1 style="color: var(--primary); font-size: 2.5rem; margin-bottom: 1rem;">${s.name}</h1>
+          
+          <div class="card" style="background: #fef3c7; border: 1px solid #fde68a; margin-bottom: 2rem;">
+            <h3 style="color: #92400e; margin-bottom: 0.5rem; font-size: 1rem; text-transform: uppercase;">Benefit</h3>
+            <p style="font-weight: 600; font-size: 1.25rem;">${s.benefit}</p>
+          </div>
+
+          <h2 style="margin: 2rem 0 1rem; border-bottom: 2px solid var(--border); padding-bottom: 0.5rem;">About Scheme</h2>
+          <p style="color: var(--text-light); font-size: 1.1rem; line-height: 1.8;">${s.fullDesc}</p>
+
+          <h2 style="margin: 2rem 0 1rem; border-bottom: 2px solid var(--border); padding-bottom: 0.5rem;">Required Documents</h2>
+          <ul style="list-style-position: inside; padding-left: 1rem; color: var(--text-light);">
+            ${s.documents.map(d => `<li style="margin-bottom: 0.5rem;">${d}</li>`).join('')}
+          </ul>
+
+          <h2 style="margin: 2rem 0 1rem; border-bottom: 2px solid var(--border); padding-bottom: 0.5rem;">Application Steps</h2>
+          <ol style="list-style-position: outside; padding-left: 1.5rem; color: var(--text-light);">
+            ${s.steps.map(step => `<li style="margin-bottom: 1rem; padding-left: 0.5rem;">${step}</li>`).join('')}
+          </ol>
+
+          ${s.portalLink ? `<div style="margin-top: 3rem; text-align: center;">
+            <a href="${s.portalLink}" target="_blank" class="btn btn-primary" style="font-size: 1.1rem; padding: 1rem 2rem;">Apply on Official Portal ↗</a>
+          </div>` : ''}
+
+          ${s.ifRejected ? `
+          <div class="card" style="margin-top: 3rem; background: #fee2e2; border: 1px solid #fca5a5;">
+            <h3 style="color: #991b1b; margin-bottom: 1rem;">What if application is rejected?</h3>
+            <p style="color: #7f1d1d;">${s.ifRejected}</p>
+            ${s.complaintLink ? `<a href="${s.complaintLink}" target="_blank" class="btn btn-outline" style="margin-top: 1rem; border-color: #991b1b; color: #991b1b;">File a Complaint</a>` : ''}
+          </div>` : ''}
+        `;
+      } catch (err) {
+        content.innerHTML = `<p class="text-center" style="color: var(--danger);">Scheme not found.</p>`;
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>File a Complaint | StepThrough</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="container nav-content">
+      <a href="/" class="logo">StepThrough</a>
+      <div class="nav-links">
+        <a href="/dashboard.html" class="btn btn-outline">Dashboard</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container" style="padding: 3rem 0; max-width: 600px;">
+    <div class="card">
+      <h2 style="color: var(--primary); margin-bottom: 1.5rem;">File a Complaint</h2>
+      <form id="complaintForm">
+        <div class="form-group">
+          <label>Issue Type</label>
+          <select id="type" required>
+            <option value="" disabled selected>Select issue type</option>
+            <option value="application_rejected">Application Rejected</option>
+            <option value="delayed_processing">Delayed Processing</option>
+            <option value="portal_issue">Portal/Website Issue</option>
+            <option value="wrong_information">Wrong Information Given</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Description</label>
+          <textarea id="description" rows="5" class="quiz-input" style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid var(--border);" required placeholder="Describe your issue in detail..."></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%;">Submit Complaint</button>
+      </form>
+    </div>
+  </main>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/auth.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      Auth.requireAuth();
+      const urlParams = new URLSearchParams(window.location.search);
+      const schemeId = urlParams.get('schemeId');
+
+      document.getElementById('complaintForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const btn = e.target.querySelector('button');
+        const type = document.getElementById('type').value;
+        const description = document.getElementById('description').value;
+
+        try {
+          btn.innerHTML = 'Submitting...';
+          btn.disabled = true;
+          await window.API.call('/complaints', {
+            method: 'POST',
+            body: JSON.stringify({ schemeId, type, description })
+          });
+          window.API.showToast('Complaint submitted successfully');
+          setTimeout(() => window.location.href = '/dashboard.html', 1500);
+        } catch (err) {
+          btn.innerHTML = 'Submit Complaint';
+          btn.disabled = false;
+        }
+      });
+    });
+  </script>
+</body>
+</html>

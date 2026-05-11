@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel | StepThrough</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/admin.css">
+</head>
+<body>
+
+  <div class="admin-layout">
+    <aside class="sidebar">
+      <h2 style="color: var(--primary); margin-bottom: 2rem; padding: 0 1rem;">Admin Panel</h2>
+      <a href="#" class="active" onclick="switchSection('dashboard')">Dashboard</a>
+      <a href="#" onclick="switchSection('guides')">Manage Guides</a>
+      <a href="#" onclick="switchSection('users')">Users</a>
+      <a href="#" onclick="switchSection('notify')">Broadcast</a>
+      <a href="/" style="margin-top: 2rem;">Back to Site</a>
+      <button onclick="Auth.logout()" class="btn btn-outline" style="width: 100%; border:none; color: var(--danger); text-align: left; padding: 0.75rem 1rem;">Logout</button>
+    </aside>
+
+    <main class="content">
+      
+      <div id="sec-dashboard">
+        <h1 style="margin-bottom: 2rem;">Overview</h1>
+        <div class="grid grid-3" id="statsGrid">
+          <div class="spinner"></div>
+        </div>
+      </div>
+
+      <div id="sec-guides" style="display: none;">
+        <h1 style="margin-bottom: 2rem;">Manage Guides</h1>
+        <div class="card" style="margin-bottom: 2rem;">
+          <h3 style="margin-bottom: 1rem;">Create / Edit Guide</h3>
+          <p style="color: var(--text-light); margin-bottom: 1rem;">Since guides are complex nested JSON, please use the AI generation tool to draft guides, then review and publish them here.</p>
+        </div>
+        <div id="guidesList"></div>
+      </div>
+
+      <div id="sec-users" style="display: none;">
+        <h1 style="margin-bottom: 2rem;">Registered Users</h1>
+        <div class="card" style="overflow-x: auto;">
+          <table style="width: 100%; text-align: left; border-collapse: collapse;">
+            <thead>
+              <tr style="border-bottom: 2px solid var(--border);">
+                <th style="padding: 1rem;">Name</th>
+                <th style="padding: 1rem;">Email</th>
+                <th style="padding: 1rem;">Joined</th>
+              </tr>
+            </thead>
+            <tbody id="usersTable"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div id="sec-notify" style="display: none;">
+        <h1 style="margin-bottom: 2rem;">Broadcast Notification</h1>
+        <div class="card" style="max-width: 600px;">
+          <form id="notifyForm">
+            <div class="form-group">
+              <label>Message</label>
+              <textarea id="notifyMsg" class="form-input" rows="4" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Send to All Users</button>
+          </form>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/ui.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/admin.js"></script>
+  <script src="/js/socket.js"></script>
+</body>
+</html>

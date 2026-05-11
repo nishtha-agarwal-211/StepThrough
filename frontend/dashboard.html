@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard | StepThrough</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    .dash-grid { display: grid; grid-template-columns: 250px 1fr; gap: 2rem; }
+    .side-nav a { display: block; padding: 0.75rem 1rem; border-radius: var(--radius-sm); margin-bottom: 0.5rem; color: var(--text-light); font-weight: 500; }
+    .side-nav a.active { background: #f0fdf4; color: var(--primary); }
+    @media (max-width: 768px) { .dash-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="container nav-content">
+      <a href="/" class="logo">StepThrough</a>
+      <div class="nav-links">
+        <a href="/library.html" class="btn btn-outline" style="border:none;">Library</a>
+        <button onclick="Auth.logout()" class="btn btn-outline" style="border:none; color: var(--danger);">Logout</button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container" style="padding: 3rem 0;">
+    <div style="margin-bottom: 3rem;">
+      <h1 id="welcomeText">Dashboard</h1>
+      <p>Pick up exactly where you left off.</p>
+    </div>
+
+    <div class="dash-grid">
+      <div class="side-nav">
+        <a href="#" class="active" onclick="switchTab('saved')">Saved Guides</a>
+        <a href="#" onclick="switchTab('ai')">AI Guide History</a>
+      </div>
+
+      <div class="dash-content">
+        
+        <div id="tab-saved">
+          <h2 style="margin-bottom: 1.5rem;">Your Guides</h2>
+          <div id="savedGrid" class="grid grid-2">
+            <div class="spinner"></div>
+          </div>
+        </div>
+
+        <div id="tab-ai" style="display: none;">
+          <h2 style="margin-bottom: 1.5rem;">AI Generated History</h2>
+          <div id="aiGrid" class="grid"></div>
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+
+  <script src="/js/ui.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/dashboard.js"></script>
+</body>
+</html>

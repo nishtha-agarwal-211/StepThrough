@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Guide Generator | StepThrough</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    .ai-loading-state { text-align: center; padding: 4rem 0; display: none; }
+    .ai-thinking { font-size: 1.5rem; color: var(--ai-color); font-weight: 600; margin-top: 1.5rem; }
+    .guide-result { display: none; margin-top: 3rem; }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="container nav-content">
+      <a href="/" class="logo">StepThrough</a>
+      <div class="nav-links">
+        <a href="/dashboard.html" class="btn btn-outline">Dashboard</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container" style="padding: 3rem 0; max-width: 800px;">
+    
+    <div id="searchBox" class="card ai-glow text-center" style="padding: 3rem 2rem;">
+      <h2 style="margin-bottom: 1rem;">What do you want to achieve?</h2>
+      <p style="margin-bottom: 2rem;">Describe your goal in detail. The AI will generate a tailored step-by-step roadmap.</p>
+      <input type="text" id="goalInput" class="form-input" style="font-size: 1.25rem; padding: 1rem; margin-bottom: 1rem;" placeholder="e.g. How to learn Python for data science in 3 months">
+      <button id="genBtn" class="btn btn-ai" style="padding: 1rem 3rem; font-size: 1.1rem;">Generate Guide</button>
+    </div>
+
+    <div id="loadingState" class="ai-loading-state">
+      <div class="spinner" style="margin: 0 auto; width: 4rem; height: 4rem; border-color: var(--ai-color); border-right-color: transparent;"></div>
+      <div class="ai-thinking" id="loadingText">Analyzing goal...</div>
+    </div>
+
+    <div id="guideResult" class="guide-result">
+      <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 2rem;">
+        <div>
+          <span class="badge badge-category" id="resCategory"></span>
+          <span class="badge badge-beginner" id="resDifficulty" style="margin-left: 0.5rem;"></span>
+          <h1 id="resTitle" style="margin-top: 1rem; margin-bottom: 0.5rem;"></h1>
+          <p id="resDesc" style="font-size: 1.1rem; color: var(--text-dark);"></p>
+          <p style="margin-top: 0.5rem;">⏱ Estimated Time: <strong id="resTime"></strong></p>
+        </div>
+        <div style="text-align: right; display: flex; flex-direction: column; gap: 0.5rem;">
+          <button id="saveBtn" class="btn btn-primary">Save to Profile</button>
+          <button onclick="window.location.reload()" class="btn btn-outline">Start Over</button>
+        </div>
+      </div>
+
+      <div id="resSteps"></div>
+    </div>
+
+  </main>
+
+  <script src="/js/ui.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/search.js"></script>
+</body>
+</html>

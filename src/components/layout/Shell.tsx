@@ -3,7 +3,7 @@
 import React from 'react';
 import Sidebar from './Sidebar';
 import { useAppStore } from '@/lib/store';
-import { Bell, Search, Settings, HelpCircle, Bot, Zap } from 'lucide-react';
+import { Bell, Search, Settings, HelpCircle, Bot, Zap, Menu } from 'lucide-react';
 import AssistantPanel from '../assistant/AssistantPanel';
 
 interface ShellProps {
@@ -11,7 +11,7 @@ interface ShellProps {
 }
 
 export default function Shell({ children }: ShellProps) {
-  const { isSidebarOpen, isAssistantOpen, toggleAssistant } = useAppStore();
+  const { isSidebarOpen, isAssistantOpen, toggleAssistant, toggleSidebar } = useAppStore();
 
   return (
     <div className="flex min-h-screen bg-slate-50 text-slate-900 selection:bg-blue-100 selection:text-blue-900">
@@ -19,12 +19,18 @@ export default function Shell({ children }: ShellProps) {
       
       <main 
         className={`flex-1 transition-all duration-300 ease-in-out flex flex-col min-h-screen
-          ${isSidebarOpen ? 'md:ml-[260px]' : 'md:ml-[72px]'}
+          ml-0 ${isSidebarOpen ? 'md:ml-[260px]' : 'md:ml-[72px]'}
         `}
       >
         {/* Global Header */}
-        <header className="h-16 px-6 md:px-10 flex items-center justify-between bg-white/70 backdrop-blur-md border-b border-slate-200 sticky top-0 z-30">
-          <div className="flex items-center gap-6 flex-1">
+        <header className="h-14 sm:h-16 px-4 sm:px-6 md:px-10 flex items-center justify-between bg-white/70 backdrop-blur-md border-b border-slate-200 sticky top-0 z-30">
+          <div className="flex items-center gap-3 sm:gap-6 flex-1">
+            <button 
+              onClick={toggleSidebar}
+              className="md:hidden p-2 text-slate-500 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-all"
+            >
+              <Menu className="w-5 h-5" />
+            </button>
             <div className="relative max-w-md w-full hidden sm:block">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
               <input 
@@ -59,12 +65,12 @@ export default function Shell({ children }: ShellProps) {
         </header>
 
         {/* Content Area */}
-        <div className="flex-1 px-6 md:px-10 py-10 max-w-[1400px] mx-auto w-full">
+        <div className="flex-1 px-4 sm:px-6 md:px-10 py-6 sm:py-10 max-w-[1400px] mx-auto w-full">
           {children}
         </div>
         
         {/* Footer */}
-        <footer className="px-10 py-8 border-t border-slate-200 bg-white/50">
+        <footer className="px-4 sm:px-10 py-6 sm:py-8 border-t border-slate-200 bg-white/50">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <div className="flex items-center gap-2">
               <Zap className="w-4 h-4 text-slate-400" />

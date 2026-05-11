@@ -138,7 +138,7 @@ export default function DocumentCenter() {
       </div>
 
       {/* Intelligence Suggestions */}
-      <section className="bg-slate-50 border border-slate-200 rounded-3xl p-10 flex flex-col md:flex-row items-center gap-10">
+      <section className="bg-slate-50 border border-slate-200 rounded-3xl p-6 sm:p-10 flex flex-col md:flex-row items-center gap-6 sm:gap-10">
          <div className="w-20 h-20 rounded-3xl bg-white border border-slate-200 flex items-center justify-center shadow-sm shrink-0">
             <Sparkles className="w-10 h-10 text-blue-600" />
          </div>

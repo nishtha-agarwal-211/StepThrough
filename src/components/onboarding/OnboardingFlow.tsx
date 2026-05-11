@@ -45,9 +45,9 @@ export default function OnboardingFlow() {
   };
 
   return (
-    <div className="fixed inset-0 z-[100] bg-white flex flex-col items-center justify-center p-6 md:p-10">
+    <div className="fixed inset-0 z-[100] bg-white flex flex-col items-center justify-center p-4 sm:p-6 md:p-10">
       {/* Minimal Header */}
-      <div className="w-full max-w-2xl flex items-center justify-between mb-20 animate-fade">
+      <div className="w-full max-w-2xl flex items-center justify-between mb-10 sm:mb-20 animate-fade">
          <div className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-lg bg-slate-900 flex items-center justify-center">
                <Zap className="w-4 h-4 text-white" />
@@ -81,7 +81,7 @@ export default function OnboardingFlow() {
                 <div className="w-2 h-2 rounded-full bg-blue-600 animate-pulse" />
                 <span className="text-[10px] font-bold uppercase tracking-[0.2em]">Context Discovery</span>
               </div>
-              <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-slate-900 leading-[1.1]">
+              <h1 className="text-2xl sm:text-4xl md:text-5xl font-bold tracking-tight text-slate-900 leading-[1.1]">
                 {currentQuestion.question}
               </h1>
             </div>
@@ -96,14 +96,14 @@ export default function OnboardingFlow() {
                   <button
                     key={option.value}
                     onClick={() => handleOptionSelect(option.value)}
-                    className={`flex items-center gap-4 p-6 rounded-2xl border text-left transition-all
+                    className={`flex items-center gap-3 sm:gap-4 p-4 sm:p-6 rounded-2xl border text-left transition-all
                       ${isSelected 
                         ? 'bg-blue-50 border-blue-600 shadow-sm ring-1 ring-blue-600/5' 
                         : 'bg-white border-slate-200 hover:border-slate-300 hover:bg-slate-50'
                       }
                     `}
                   >
-                    <div className={`w-10 h-10 rounded-lg flex items-center justify-center text-xl transition-all
+                    <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center text-xl transition-all
                       ${isSelected ? 'bg-blue-600 text-white' : 'bg-slate-50 text-slate-400'}
                     `}>
                       {option.icon || <Check className="w-5 h-5" />}
@@ -127,7 +127,7 @@ export default function OnboardingFlow() {
                   <input 
                     type="number" 
                     placeholder={currentQuestion.placeholder}
-                    className="w-full bg-slate-50 border border-slate-200 rounded-2xl p-8 text-3xl font-bold text-center focus:outline-none focus:border-blue-600 focus:ring-4 focus:ring-blue-100 transition-all"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-2xl p-4 sm:p-8 text-xl sm:text-3xl font-bold text-center focus:outline-none focus:border-blue-600 focus:ring-4 focus:ring-blue-100 transition-all"
                     onChange={(e) => setOnboardingAnswer(currentQuestion.id, e.target.value)}
                   />
                 </div>
@@ -138,7 +138,7 @@ export default function OnboardingFlow() {
                   <input 
                     type="text" 
                     placeholder={currentQuestion.placeholder}
-                    className="w-full bg-slate-50 border border-slate-200 rounded-2xl p-8 text-xl font-semibold focus:outline-none focus:border-blue-600 focus:ring-4 focus:ring-blue-100 transition-all"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-2xl p-4 sm:p-8 text-lg sm:text-xl font-semibold focus:outline-none focus:border-blue-600 focus:ring-4 focus:ring-blue-100 transition-all"
                     onChange={(e) => setOnboardingAnswer(currentQuestion.id, e.target.value)}
                   />
                 </div>
@@ -148,7 +148,7 @@ export default function OnboardingFlow() {
         </AnimatePresence>
 
         {/* Footer Navigation */}
-        <div className="mt-20 flex items-center justify-between border-t border-slate-100 pt-10">
+        <div className="mt-10 sm:mt-20 flex items-center justify-between border-t border-slate-100 pt-6 sm:pt-10">
           <button 
             onClick={handleBack}
             disabled={onboardingStep === 0}
@@ -175,7 +175,7 @@ export default function OnboardingFlow() {
       </motion.div>
 
       {/* Subtle reassurance */}
-      <div className="mt-20 flex items-center gap-6 opacity-30 animate-fade">
+      <div className="mt-10 sm:mt-20 flex items-center gap-4 sm:gap-6 opacity-30 animate-fade flex-wrap justify-center">
          <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-slate-500">Government Verified</span>
          <div className="w-1 h-1 rounded-full bg-slate-300" />
          <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-slate-500">Secure Vault</span>

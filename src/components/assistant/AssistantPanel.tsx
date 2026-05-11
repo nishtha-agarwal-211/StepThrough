@@ -46,21 +46,30 @@ export default function AssistantPanel() {
   return (
     <AnimatePresence>
       {isAssistantOpen && (
-        <motion.div
-          initial={{ x: '100%' }}
-          animate={{ x: 0 }}
-          exit={{ x: '100%' }}
-          transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-          className="fixed right-0 top-0 h-full w-full md:w-[400px] z-[60] glass-elevated flex flex-col border-l border-white/10"
-        >
+        <>
+          {/* Backdrop overlay for mobile */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/40 z-[55] md:hidden"
+            onClick={toggleAssistant}
+          />
+          <motion.div
+            initial={{ x: '100%' }}
+            animate={{ x: 0 }}
+            exit={{ x: '100%' }}
+            transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+            className="fixed right-0 top-0 h-full w-full md:w-[400px] z-[60] bg-white flex flex-col border-l border-slate-200 shadow-2xl"
+          >
           {/* Header */}
-          <div className="p-6 border-b border-white/10 flex items-center justify-between bg-[var(--st-bg-secondary)]/50">
+          <div className="p-6 border-b border-slate-200 flex items-center justify-between bg-slate-50">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-[var(--st-gradient-hero)] flex items-center justify-center">
+              <div className="w-10 h-10 rounded-xl bg-slate-900 flex items-center justify-center">
                 <Bot className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h3 className="font-bold text-white">AI Mentor</h3>
+                <h3 className="font-bold text-slate-900">AI Mentor</h3>
                 <div className="flex items-center gap-1.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
                   <span className="text-[10px] font-bold text-emerald-500 uppercase tracking-widest">Active Intelligence</span>
@@ -69,7 +78,7 @@ export default function AssistantPanel() {
             </div>
             <button 
               onClick={toggleAssistant}
-              className="p-2 rounded-xl hover:bg-white/5 transition-colors text-[var(--st-text-muted)]"
+              className="p-2 rounded-xl hover:bg-slate-100 transition-colors text-slate-400"
             >
               <X className="w-5 h-5" />
             </button>
@@ -88,7 +97,7 @@ export default function AssistantPanel() {
                   className={`max-w-[85%] p-4 rounded-2xl text-sm leading-relaxed
                     ${msg.role === 'user' 
                       ? 'bg-[var(--st-accent-primary)] text-white' 
-                      : 'bg-white/5 border border-white/10 text-[var(--st-text-secondary)]'
+                      : 'bg-slate-50 border border-slate-200 text-slate-700'
                     }
                   `}
                 >
@@ -100,14 +109,14 @@ export default function AssistantPanel() {
           </div>
 
           {/* Input Area */}
-          <div className="p-6 border-t border-white/10 bg-[var(--st-bg-primary)]">
+          <div className="p-6 border-t border-slate-200 bg-white">
             {messages.length < 3 && (
               <div className="mb-4 flex flex-wrap gap-2">
                 {suggestions.map((s, i) => (
                   <button 
                     key={i}
                     onClick={() => setInput(s)}
-                    className="text-[10px] font-medium px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-[var(--st-text-muted)] hover:text-white hover:bg-white/10 transition-colors"
+                    className="text-[10px] font-medium px-3 py-1.5 rounded-lg bg-slate-50 border border-slate-200 text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition-colors"
                   >
                     {s}
                   </button>
@@ -122,17 +131,17 @@ export default function AssistantPanel() {
                 onChange={(e) => setInput(e.target.value)}
                 onKeyPress={(e) => e.key === 'Enter' && handleSend()}
                 placeholder="Ask me anything..."
-                className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 pl-4 pr-12 text-sm focus:outline-none focus:border-[var(--st-accent-primary)] transition-colors"
+                className="w-full bg-slate-50 border border-slate-200 rounded-2xl py-4 pl-4 pr-12 text-sm text-slate-900 focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100 transition-colors placeholder:text-slate-400"
               />
               <button 
                 onClick={handleSend}
-                className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-xl bg-[var(--st-gradient-hero)] flex items-center justify-center text-white"
+                className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-xl bg-slate-900 flex items-center justify-center text-white hover:bg-slate-800 transition-colors"
               >
                 <Send className="w-4 h-4" />
               </button>
             </div>
             
-            <div className="mt-4 flex items-center justify-center gap-6 opacity-40">
+            <div className="mt-4 flex items-center justify-center gap-6 opacity-30 text-slate-400">
               <Sparkles className="w-4 h-4" />
               <Zap className="w-4 h-4" />
               <ShieldQuestion className="w-4 h-4" />
@@ -140,6 +149,7 @@ export default function AssistantPanel() {
             </div>
           </div>
         </motion.div>
+        </>
       )}
     </AnimatePresence>
   );

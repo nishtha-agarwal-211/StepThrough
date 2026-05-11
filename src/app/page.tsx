@@ -82,7 +82,7 @@ export default function Home() {
         <section className="flex flex-col md:flex-row md:items-end justify-between gap-8">
           <div className="space-y-2">
             <span className="section-label">Perspective</span>
-            <h1 className="text-4xl font-bold tracking-tight text-slate-900">
+            <h1 className="text-2xl sm:text-4xl font-bold tracking-tight text-slate-900">
               Welcome back, {user?.name.split(' ')[0]}
             </h1>
             <p className="text-slate-500 text-lg">
@@ -90,7 +90,7 @@ export default function Home() {
             </p>
           </div>
           
-          <div className="flex items-center gap-3">
+          <div className="flex flex-wrap items-center gap-3">
              <button 
                 onClick={() => setCurrentPage('explore')}
                 className="btn-primary"
@@ -106,7 +106,7 @@ export default function Home() {
         {/* Overview Stats */}
         <StatsGrid stats={stats} />
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 pt-4">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-12 pt-4">
           {/* Main Content */}
           <div className="lg:col-span-8 space-y-12">
             {/* Active Journeys */}

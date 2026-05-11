@@ -37,12 +37,12 @@ export default function JourneyView() {
               </div>
               <span className="section-label mb-0">Active Pathway</span>
             </div>
-            <h1 className="text-3xl font-bold text-slate-900 tracking-tight">{journey.opportunity.title}</h1>
+            <h1 className="text-xl sm:text-3xl font-bold text-slate-900 tracking-tight">{journey.opportunity.title}</h1>
             <p className="text-slate-500 font-medium mt-1">{journey.opportunity.provider}</p>
           </div>
         </div>
 
-        <div className="flex flex-col items-end gap-3">
+        <div className="flex flex-col items-start sm:items-end gap-3">
           <div className="text-right">
             <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Total Progression</p>
             <div className="flex items-center gap-3">
@@ -58,7 +58,7 @@ export default function JourneyView() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-16 items-start">
         {/* Simplified Roadmap List */}
         <div className="lg:col-span-4 space-y-6">
           <h2 className="text-sm font-bold uppercase tracking-widest text-slate-400 px-1">Roadmap</h2>
@@ -114,7 +114,7 @@ export default function JourneyView() {
               initial={{ opacity: 0, x: 10 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -10 }}
-              className="bg-white border border-slate-200 rounded-3xl p-10 shadow-lg shadow-slate-200/50 space-y-10"
+              className="bg-white border border-slate-200 rounded-3xl p-5 sm:p-10 shadow-lg shadow-slate-200/50 space-y-8 sm:space-y-10"
             >
               <div className="flex items-start justify-between">
                 <div>
@@ -126,11 +126,11 @@ export default function JourneyView() {
                       <Clock className="w-3.5 h-3.5" /> {currentStep.estimatedTime} Effort
                     </span>
                   </div>
-                  <h2 className="text-3xl font-bold text-slate-900 tracking-tight">{currentStep.title}</h2>
+                  <h2 className="text-xl sm:text-3xl font-bold text-slate-900 tracking-tight">{currentStep.title}</h2>
                 </div>
               </div>
 
-              <p className="text-slate-600 text-lg leading-relaxed max-w-3xl">
+              <p className="text-slate-600 text-base sm:text-lg leading-relaxed max-w-3xl">
                 {currentStep.description}
               </p>
 
@@ -165,7 +165,7 @@ export default function JourneyView() {
                 </div>
               </div>
 
-              <div className="pt-10 border-t border-slate-100 flex items-center justify-between">
+              <div className="pt-6 sm:pt-10 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4">
                 <button className="text-xs font-bold text-slate-400 hover:text-slate-900 transition-colors">
                   Need Help with this Step?
                 </button>

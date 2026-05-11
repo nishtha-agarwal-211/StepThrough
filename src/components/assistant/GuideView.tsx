@@ -45,10 +45,10 @@ export default function GuideView() {
         </motion.div>
         
         <div className="space-y-2">
-          <h1 className="text-5xl font-black tracking-tight leading-tight">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight leading-tight">
             Ask for any <span className="gradient-text">Journey.</span>
           </h1>
-          <p className="text-[var(--st-text-secondary)] text-xl max-w-2xl mx-auto">
+          <p className="text-[var(--st-text-secondary)] text-base sm:text-xl max-w-2xl mx-auto">
             Our AI Mentor can break down any complex life process into a structured, step-by-step roadmap instantly.
           </p>
         </div>
@@ -57,13 +57,13 @@ export default function GuideView() {
       {/* Generation Interface */}
       <section className="relative">
         <div className="glass-elevated rounded-[40px] p-2 overflow-hidden border border-white/10 shadow-2xl">
-          <div className="bg-[var(--st-bg-primary)] rounded-[38px] p-6 md:p-10">
+          <div className="bg-[var(--st-bg-primary)] rounded-[38px] p-4 sm:p-6 md:p-10">
             <div className="relative">
               <textarea 
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="Type anything you want to achieve... e.g., 'Apply for a startup grant' or 'Get an education loan'"
-                className="w-full bg-white/5 border border-white/10 rounded-3xl p-6 md:p-8 text-lg md:text-xl font-medium focus:outline-none focus:border-[var(--st-accent-primary)] transition-all min-h-[150px] resize-none pr-20"
+                className="w-full bg-white/5 border border-white/10 rounded-3xl p-4 sm:p-6 md:p-8 text-base sm:text-lg md:text-xl font-medium focus:outline-none focus:border-[var(--st-accent-primary)] transition-all min-h-[120px] sm:min-h-[150px] resize-none pr-16 sm:pr-20"
               />
               <button 
                 onClick={handleGenerate}
@@ -179,11 +179,11 @@ export default function GuideView() {
             </div>
 
             <div className="glass-card p-8 border-[var(--st-accent-emerald)]/30">
-              <div className="flex items-start gap-6 mb-8">
+              <div className="flex flex-col sm:flex-row items-start gap-4 sm:gap-6 mb-8">
                 <div className="w-16 h-16 rounded-2xl bg-emerald-500/10 flex items-center justify-center text-3xl">🎯</div>
                 <div>
-                  <h3 className="text-xl font-bold mb-1">{query}</h3>
-                  <div className="flex items-center gap-4 text-xs font-bold text-[var(--st-text-muted)] uppercase tracking-wider">
+                  <h3 className="text-lg sm:text-xl font-bold mb-1">{query}</h3>
+                  <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-xs font-bold text-[var(--st-text-muted)] uppercase tracking-wider">
                     <span className="text-emerald-500">6 Intelligent Steps</span>
                     <span>•</span>
                     <span>12-15 Days Estimated</span>
@@ -212,7 +212,7 @@ export default function GuideView() {
                 ))}
               </div>
 
-              <div className="mt-8 flex items-center gap-4">
+              <div className="mt-8 flex flex-col sm:flex-row items-center gap-4">
                 <button className="flex-1 btn-primary-st">
                   Start This Journey Now
                 </button>

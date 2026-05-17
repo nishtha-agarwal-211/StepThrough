@@ -92,7 +92,7 @@ export default function OnboardingFlow() {
                         : 'hover:bg-[var(--st-glass-surface-hover)]'}
                     `}
                     style={isSelected
-                      ? { background: 'var(--st-glass-surface-hover)', border: '1px solid rgba(201,169,110,0.4)', boxShadow: '0 8px 32px rgba(201,169,110,0.12)', ringColor: 'rgba(201,169,110,0.2)' }
+                      ? { background: 'var(--st-glass-surface-hover)', border: '1px solid rgba(201,169,110,0.4)', boxShadow: '0 8px 32px rgba(201,169,110,0.12)' }
                       : { background: 'var(--st-glass-surface)', border: '1px solid var(--st-glass-border)' }
                     }
                   >

@@ -12,124 +12,79 @@ export default function AuthPage() {
   const [name, setName] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  
   const { setUser } = useAppStore();
 
   useEffect(() => {
-    /* global google */
     if (typeof window !== 'undefined' && (window as any).google) {
       (window as any).google.accounts.id.initialize({
-        client_id: 'your_google_client_id_here.apps.googleusercontent.com', // Matches backend .env
+        client_id: 'your_google_client_id_here.apps.googleusercontent.com',
         callback: handleGoogleCallback,
       });
     }
   }, []);
 
   const handleGoogleCallback = async (response: any) => {
-    setLoading(true);
-    setError('');
-
+    setLoading(true); setError('');
     try {
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/google`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ credential: response.credential }),
       });
-
+      const ct = res.headers.get('content-type') || '';
+      if (!res.ok || !ct.includes('application/json')) throw new Error('Backend unavailable');
       const data = await res.json();
-
-      if (data.success) {
-        localStorage.setItem('token', data.token);
-        setUser(data.user);
-      } else {
-        setError(data.error || 'Google login failed');
-      }
+      if (data.success) { localStorage.setItem('token', data.token); setUser(data.user); }
+      else { setError(data.error || 'Google login failed'); }
     } catch (err) {
-      console.warn('Backend connection failed. Proceeding with mock demo user via Google.');
-      // Mock login for demo purposes when backend is unavailable
-      const mockUser = {
-        id: 'demo-google-123',
-        name: 'Demo Google User',
-        email: 'demo@google.com',
-        quizData: {} // Will trigger onboarding flow
-      };
-      localStorage.setItem('token', 'mock-jwt-token-123');
-      setUser(mockUser);
-    } finally {
-      setLoading(false);
-    }
+      const mockUser = { id: 'demo-google-123', name: 'Demo Google User', email: 'demo@google.com', quizData: {} };
+      localStorage.setItem('token', 'mock-jwt-token-123'); setUser(mockUser);
+    } finally { setLoading(false); }
   };
 
   const triggerGoogleLogin = () => {
-    if (typeof window !== 'undefined' && (window as any).google) {
-      (window as any).google.accounts.id.prompt(); // One Tap
-    } else {
-      setError('Google Sign-In is still loading. Please try again in a moment.');
-    }
+    if (typeof window !== 'undefined' && (window as any).google) { (window as any).google.accounts.id.prompt(); }
+    else { setError('Google Sign-In is still loading. Please try again in a moment.'); }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    setError('');
-
+    e.preventDefault(); setLoading(true); setError('');
     try {
       const endpoint = isLogin ? '/api/auth/login' : '/api/auth/signup';
       const body = isLogin ? { email, password } : { name, email, password };
-
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}${endpoint}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body),
+        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body),
       });
-
+      const ct = response.headers.get('content-type') || '';
+      if (!response.ok || !ct.includes('application/json')) throw new Error('Backend unavailable');
       const data = await response.json();
-
-      if (data.success) {
-        localStorage.setItem('token', data.token);
-        setUser(data.user);
-      } else {
-        setError(data.error || 'Something went wrong');
-      }
+      if (data.success) { localStorage.setItem('token', data.token); setUser(data.user); }
+      else { setError(data.error || 'Something went wrong'); }
     } catch (err) {
-      console.warn('Backend connection failed. Proceeding with mock demo user.');
-      // Mock login for demo purposes when backend is unavailable
-      const mockUser = {
-        id: 'demo-123',
-        name: name || 'Demo User',
-        email: email,
-        quizData: {} // Will trigger onboarding flow
-      };
-      localStorage.setItem('token', 'mock-jwt-token-123');
-      setUser(mockUser);
-    } finally {
-      setLoading(false);
-    }
+      const mockUser = { id: 'demo-123', name: name || 'Demo User', email, quizData: {} };
+      localStorage.setItem('token', 'mock-jwt-token-123'); setUser(mockUser);
+    } finally { setLoading(false); }
   };
 
+  const inputStyle = "w-full border rounded-[20px] py-4 pl-14 pr-4 text-sm font-medium focus:outline-none transition-all shadow-inner";
+
   return (
-    <div className="min-h-screen flex items-center justify-center p-6 bg-[var(--st-bg-dark)] relative overflow-hidden">
-      {/* Ambient Background Blobs */}
+    <div className="min-h-screen flex items-center justify-center p-6 relative overflow-hidden" style={{ background: 'var(--st-bg-base)' }}>
       <div className="ambient-container">
-        <div className="ambient-blob blob-1 opacity-30" />
-        <div className="ambient-blob blob-2 opacity-30" />
-        <div className="ambient-blob blob-3 opacity-30" />
+        <div className="ambient-blob blob-1 opacity-50" />
+        <div className="ambient-blob blob-2 opacity-50" />
+        <div className="ambient-blob blob-3 opacity-50" />
       </div>
 
-      <motion.div 
-        initial={{ opacity: 0, y: 40, scale: 0.9 }}
-        animate={{ opacity: 1, y: 0, scale: 1 }}
-        transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-        className="w-full max-w-md relative z-10"
-      >
-        <div className="bg-white border border-[var(--st-glass-border)] rounded-[40px] overflow-hidden shadow-xl">
+      <motion.div initial={{ opacity: 0, y: 40, scale: 0.9 }} animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ type: 'spring', damping: 25, stiffness: 200 }} className="w-full max-w-md relative z-10">
+        <div className="liquid-glass-elevated liquid-border rounded-[40px] overflow-hidden" style={{ boxShadow: '0 32px 100px rgba(139,115,85,0.15), 0 8px 32px rgba(139,115,85,0.08)' }}>
           <div className="p-10 sm:p-14">
             <div className="flex flex-col items-center mb-12">
-              <div className="w-16 h-16 rounded-[22px] bg-[var(--st-accent-brand)] flex items-center justify-center mb-8 shadow-xl shadow-[var(--st-accent-brand)]/20">
+              <div className="w-16 h-16 rounded-[22px] flex items-center justify-center mb-8 shadow-xl" style={{ background: 'linear-gradient(135deg, #C9A96E, #8B7355)', boxShadow: '0 8px 32px rgba(201,169,110,0.3)' }}>
                 <Zap className="w-8 h-8 text-white" />
               </div>
               <h1 className="text-4xl font-bold text-[var(--st-text-primary)] tracking-tight">StepThrough</h1>
-              <p className="text-[var(--st-text-muted)] text-[11px] font-bold uppercase tracking-[0.25em] mt-3 opacity-60">
+              <p className="text-[var(--st-text-faint)] text-[11px] font-bold uppercase tracking-[0.25em] mt-3 opacity-60">
                 {isLogin ? 'Welcome Back' : 'Create Account'}
               </p>
             </div>
@@ -137,22 +92,12 @@ export default function AuthPage() {
             <form onSubmit={handleSubmit} className="space-y-6">
               <AnimatePresence mode="wait">
                 {!isLogin && (
-                  <motion.div
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: 'auto' }}
-                    exit={{ opacity: 0, height: 0 }}
-                    className="space-y-2"
-                  >
-                    <label className="text-[10px] font-bold uppercase tracking-widest text-[var(--st-text-muted)] px-1 opacity-60">Full Name</label>
+                  <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} className="space-y-2">
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-[var(--st-text-faint)] px-1 opacity-60">Full Name</label>
                     <div className="relative">
-                      <User className="absolute left-5 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--st-text-muted)] opacity-30" />
-                      <input 
-                        type="text" 
-                        placeholder="John Doe"
-                        required
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        className="w-full bg-[var(--st-bg-dark)] border border-[var(--st-glass-border)] rounded-[20px] py-4 pl-14 pr-4 text-sm text-[var(--st-text-primary)] font-medium focus:outline-none focus:border-[var(--st-accent-primary)] focus:bg-white transition-all placeholder:text-[var(--st-text-muted)]/40 shadow-inner"
+                      <User className="absolute left-5 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--st-text-faint)] opacity-30" />
+                      <input type="text" placeholder="John Doe" required value={name} onChange={(e) => setName(e.target.value)}
+                        className="input-liquid w-full py-4 pl-14 pr-4 text-sm font-medium placeholder:text-[var(--st-text-faint)] placeholder:opacity-60"
                       />
                     </div>
                   </motion.div>
@@ -160,49 +105,36 @@ export default function AuthPage() {
               </AnimatePresence>
 
               <div className="space-y-2">
-                <label className="text-[10px] font-bold uppercase tracking-widest text-[var(--st-text-muted)] px-1 opacity-60">Email Address</label>
+                <label className="text-[10px] font-bold uppercase tracking-widest text-[var(--st-text-faint)] px-1 opacity-60">Email Address</label>
                 <div className="relative">
-                  <Mail className="absolute left-5 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--st-text-muted)] opacity-30" />
-                  <input 
-                    type="email" 
-                    placeholder="name@example.com"
-                    required
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="w-full bg-[var(--st-bg-dark)] border border-[var(--st-glass-border)] rounded-[20px] py-4 pl-14 pr-4 text-sm text-[var(--st-text-primary)] font-medium focus:outline-none focus:border-[var(--st-accent-primary)] focus:bg-white transition-all placeholder:text-[var(--st-text-muted)]/40 shadow-inner"
+                  <Mail className="absolute left-5 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--st-text-faint)] opacity-30 z-10" />
+                  <input type="email" placeholder="name@example.com" required value={email} onChange={(e) => setEmail(e.target.value)}
+                    className="input-liquid w-full py-4 pl-14 pr-4 text-sm font-medium placeholder:text-[var(--st-text-faint)] placeholder:opacity-60"
                   />
                 </div>
               </div>
 
               <div className="space-y-2">
                 <div className="flex justify-between items-center px-1">
-                  <label className="text-[10px] font-bold uppercase tracking-widest text-[var(--st-text-muted)] opacity-60">Password</label>
-                  {isLogin && <button type="button" className="text-[9px] font-bold text-[var(--st-accent-primary)] uppercase tracking-widest hover:text-[var(--st-text-primary)] transition-colors">Recovery</button>}
+                  <label className="text-[10px] font-bold uppercase tracking-widest text-[var(--st-text-faint)] opacity-60">Password</label>
+                  {isLogin && <button type="button" className="text-[9px] font-bold uppercase tracking-widest hover:text-[var(--st-text-primary)] transition-colors" style={{ color: 'var(--st-accent-mocha)' }}>Recovery</button>}
                 </div>
                 <div className="relative">
-                  <Lock className="absolute left-5 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--st-text-muted)] opacity-30" />
-                  <input 
-                    type="password" 
-                    placeholder="••••••••"
-                    required
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="w-full bg-[var(--st-bg-dark)] border border-[var(--st-glass-border)] rounded-[20px] py-4 pl-14 pr-4 text-sm text-[var(--st-text-primary)] font-medium focus:outline-none focus:border-[var(--st-accent-primary)] focus:bg-white transition-all placeholder:text-[var(--st-text-muted)]/40 shadow-inner"
+                  <Lock className="absolute left-5 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--st-text-faint)] opacity-30 z-10" />
+                  <input type="password" placeholder="••••••••" required value={password} onChange={(e) => setPassword(e.target.value)}
+                    className="input-liquid w-full py-4 pl-14 pr-4 text-sm font-medium placeholder:text-[var(--st-text-faint)] placeholder:opacity-60"
                   />
                 </div>
               </div>
 
               {error && (
-                <p className="text-xs font-bold text-rose-400 text-center bg-rose-500/10 py-3 rounded-xl border border-rose-500/20 uppercase tracking-widest">
+                <p className="text-xs font-bold text-center py-3 rounded-xl uppercase tracking-widest" style={{ color: 'var(--st-accent-danger)', background: 'rgba(196,122,106,0.08)', border: '1px solid rgba(196,122,106,0.15)' }}>
                   {error}
                 </p>
               )}
 
-              <button 
-                type="submit" 
-                disabled={loading}
-                className="w-full btn-glass-primary py-5 flex items-center justify-center gap-3 group disabled:opacity-50 !rounded-[24px] shadow-lg shadow-[var(--st-accent-brand)]/10 text-[13px] font-bold uppercase tracking-[0.2em]"
-              >
+              <button type="submit" disabled={loading}
+                className="w-full py-5 btn-liquid-gold flex items-center justify-center gap-3 group disabled:opacity-50 !rounded-[24px] text-[13px] font-bold uppercase tracking-[0.2em]">
                 {loading ? 'Authenticating...' : (isLogin ? 'Sign In' : 'Get Started')}
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1.5 transition-transform" />
               </button>
@@ -212,39 +144,33 @@ export default function AuthPage() {
               <div className="absolute inset-0 flex items-center">
                 <span className="w-full border-t border-[var(--st-glass-border)]"></span>
               </div>
-              <div className="relative flex justify-center text-[10px] uppercase tracking-[0.3em] font-bold text-[var(--st-text-muted)] opacity-30">
-                <span className="bg-white px-6">Trusted Access</span>
+              <div className="relative flex justify-center text-[10px] uppercase tracking-[0.3em] font-bold text-[var(--st-text-faint)] opacity-30">
+                <span className="px-6" style={{ background: 'var(--st-glass-elevated)' }}>Trusted Access</span>
               </div>
             </div>
 
             <div className="grid grid-cols-2 gap-4">
-              <button 
-                type="button"
-                onClick={triggerGoogleLogin}
-                className="flex items-center justify-center gap-3 py-4 rounded-[20px] border border-[var(--st-glass-border)] bg-white text-[10px] font-bold uppercase tracking-widest text-[var(--st-text-primary)] hover:bg-[var(--st-bg-dark)] transition-all shadow-sm"
-              >
-                <Globe className="w-4 h-4 text-[var(--st-accent-brand)]" /> Google
+              <button type="button" onClick={triggerGoogleLogin} className="btn-liquid py-4 justify-center text-[10px] font-bold uppercase tracking-widest">
+                <Globe className="w-4 h-4" style={{ color: 'var(--st-accent-gold)' }} /> Google
               </button>
-              <button className="flex items-center justify-center gap-3 py-4 rounded-[20px] border border-[var(--st-glass-border)] bg-white text-[10px] font-bold uppercase tracking-widest text-[var(--st-text-primary)] hover:bg-[var(--st-bg-dark)] transition-all shadow-sm">
-                <Code className="w-4 h-4 text-[var(--st-accent-primary)]" /> Github
+              <button className="btn-liquid py-4 justify-center text-[10px] font-bold uppercase tracking-widest">
+                <Code className="w-4 h-4" style={{ color: 'var(--st-accent-mocha)' }} /> Github
               </button>
             </div>
           </div>
 
-          <div className="p-10 bg-[var(--st-bg-dark)]/50 border-t border-[var(--st-glass-border)] text-center">
+          <div className="p-10 border-t border-[var(--st-glass-border)] text-center" style={{ background: 'rgba(239,231,221,0.3)' }}>
             <p className="text-[11px] text-[var(--st-text-muted)] font-bold tracking-tight opacity-60">
               {isLogin ? "New to the platform?" : "Already joined?"}{' '}
-              <button 
-                onClick={() => setIsLogin(!isLogin)}
-                className="text-[var(--st-accent-primary)] font-bold hover:text-[var(--st-text-primary)] transition-colors ml-1"
-              >
+              <button onClick={() => setIsLogin(!isLogin)}
+                className="font-bold hover:text-[var(--st-text-primary)] transition-colors ml-1" style={{ color: 'var(--st-accent-mocha)' }}>
                 {isLogin ? 'Create Account' : 'Sign In'}
               </button>
             </p>
           </div>
         </div>
 
-        <p className="text-[9px] text-center text-[var(--st-text-muted)] mt-12 font-bold uppercase tracking-[0.3em] opacity-30">
+        <p className="text-[9px] text-center text-[var(--st-text-faint)] mt-12 font-bold uppercase tracking-[0.3em] opacity-30">
           Encrypted Authentication Environment
         </p>
       </motion.div>

@@ -8,14 +8,19 @@ interface StatsGridProps {
   stats: DashboardStats;
 }
 
+const warmColors = [
+  { color: 'var(--st-accent-terracotta)', bg: 'rgba(184,124,106,0.1)', border: 'rgba(184,124,106,0.15)' },
+  { color: 'var(--st-accent-gold)', bg: 'rgba(201,169,110,0.1)', border: 'rgba(201,169,110,0.15)' },
+  { color: 'var(--st-accent-success)', bg: 'rgba(126,174,123,0.1)', border: 'rgba(126,174,123,0.15)' },
+  { color: 'var(--st-accent-mocha)', bg: 'rgba(139,115,85,0.1)', border: 'rgba(139,115,85,0.15)' },
+];
+
 export default function StatsGrid({ stats }: StatsGridProps) {
   const statItems = [
     { 
       label: 'Active Pathways', 
       value: stats.activeJourneys, 
       icon: Target, 
-      color: 'text-indigo-600', 
-      bg: 'bg-indigo-50',
       trend: '+12%',
       description: 'Progressing towards completion'
     },
@@ -23,8 +28,6 @@ export default function StatsGrid({ stats }: StatsGridProps) {
       label: 'Impact Score', 
       value: (stats.completedJourneys * 1250 + 450).toLocaleString(), 
       icon: Award, 
-      color: 'text-amber-600', 
-      bg: 'bg-amber-50',
       trend: 'Top 5%',
       description: 'System-wide ranking'
     },
@@ -32,8 +35,6 @@ export default function StatsGrid({ stats }: StatsGridProps) {
       label: 'Verified Assets', 
       value: stats.documentsUploaded, 
       icon: FileCheck, 
-      color: 'text-emerald-600', 
-      bg: 'bg-emerald-50',
       trend: '94%',
       description: 'Authentication success rate'
     },
@@ -41,8 +42,6 @@ export default function StatsGrid({ stats }: StatsGridProps) {
       label: 'Network Nodes', 
       value: '2,481', 
       icon: Users, 
-      color: 'text-blue-600', 
-      bg: 'bg-blue-50',
       trend: '+42',
       description: 'Connected peers in path'
     },
@@ -56,29 +55,32 @@ export default function StatsGrid({ stats }: StatsGridProps) {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: i * 0.05, duration: 0.4 }}
-          className="bg-white border border-gray-100 p-6 rounded-2xl hover:shadow-xl hover:shadow-gray-200/40 transition-all duration-300 group relative overflow-hidden"
+          className="liquid-card p-6 group relative overflow-hidden"
         >
           <div className="flex items-start justify-between mb-4">
-            <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${item.bg} ${item.color} transition-transform group-hover:scale-110 duration-300`}>
+            <div 
+              className="w-10 h-10 rounded-xl flex items-center justify-center transition-transform group-hover:scale-110 duration-300"
+              style={{ background: warmColors[i].bg, color: warmColors[i].color }}
+            >
               <item.icon className="w-5 h-5" />
             </div>
-            <div className="flex items-center gap-1 text-[10px] font-bold text-gray-400 bg-gray-50 px-2 py-1 rounded-md uppercase tracking-wider">
+            <div className="flex items-center gap-1 text-[10px] font-bold px-2 py-1 rounded-md uppercase tracking-wider border" style={{ color: 'var(--st-text-faint)', background: 'var(--st-glass-surface)', borderColor: 'var(--st-glass-border)' }}>
               {item.trend}
-              <ArrowUpRight className="w-2.5 h-2.5 text-emerald-500" />
+              <ArrowUpRight className="w-2.5 h-2.5" style={{ color: 'var(--st-accent-success)' }} />
             </div>
           </div>
           
           <div className="space-y-1">
-            <h3 className="text-2xl font-bold text-gray-900 tracking-tight">{item.value}</h3>
-            <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider">{item.label}</p>
+            <h3 className="text-2xl font-bold text-[var(--st-text-primary)] tracking-tight">{item.value}</h3>
+            <p className="text-xs font-semibold text-[var(--st-text-muted)] uppercase tracking-wider">{item.label}</p>
           </div>
           
-          <p className="text-[10px] text-gray-400 mt-4 font-medium italic opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          <p className="text-[10px] text-[var(--st-text-faint)] mt-4 font-medium italic opacity-0 group-hover:opacity-100 transition-opacity duration-300">
             {item.description}
           </p>
           
-          {/* Decorative accent */}
-          <div className={`absolute bottom-0 left-0 w-1 h-0 group-hover:h-full transition-all duration-300 ${item.color.replace('text', 'bg')}`} />
+          {/* Warm accent bar */}
+          <div className="absolute bottom-0 left-0 w-1 h-0 group-hover:h-full transition-all duration-300 rounded-r" style={{ background: warmColors[i].color }} />
         </motion.div>
       ))}
     </div>

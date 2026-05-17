@@ -28,14 +28,14 @@ export default function Sidebar() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/5 backdrop-blur-[2px] z-40 md:hidden"
+            className="fixed inset-0 bg-[rgba(30,26,23,0.15)] backdrop-blur-[3px] z-40 md:hidden"
             onClick={toggleSidebar}
           />
         )}
       </AnimatePresence>
 
       <aside
-        className={`fixed left-0 top-0 h-full z-50 flex flex-col bg-white border-r border-gray-100
+        className={`fixed left-0 top-0 h-full z-50 flex flex-col sidebar-liquid
           ${isSidebarOpen ? 'w-[260px]' : 'w-[72px]'}
           transition-all duration-500 ease-[var(--st-ease)]
           md:translate-x-0
@@ -45,11 +45,11 @@ export default function Sidebar() {
         {/* Logo Section */}
         <div className="flex items-center h-16 px-6 shrink-0">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-gray-900 flex items-center justify-center shadow-lg shadow-gray-200 shrink-0">
+            <div className="w-8 h-8 rounded-lg flex items-center justify-center shadow-lg shrink-0" style={{ background: 'linear-gradient(135deg, #C9A96E, #8B7355)' }}>
               <Zap className="w-4 h-4 text-white" />
             </div>
             {isSidebarOpen && (
-              <span className="font-bold text-lg tracking-tight text-gray-900">
+              <span className="font-bold text-lg tracking-tight text-[var(--st-text-primary)]">
                 StepThrough
               </span>
             )}
@@ -71,18 +71,18 @@ export default function Sidebar() {
                       if (window.innerWidth < 768) toggleSidebar(); 
                     }}
                     className={`w-full nav-item-glass group relative
-                      ${isActive ? 'active' : 'hover:bg-gray-50'}
+                      ${isActive ? 'active' : 'hover:bg-[rgba(201,169,110,0.06)]'}
                       ${!isSidebarOpen ? 'justify-center px-0' : ''}
                     `}
                   >
-                    <item.icon className={`w-[18px] h-[18px] transition-colors ${isActive ? 'text-gray-900' : 'text-gray-400 group-hover:text-gray-900'}`} />
+                    <item.icon className={`w-[18px] h-[18px] transition-colors ${isActive ? 'text-[var(--st-accent-mocha)]' : 'text-[var(--st-text-faint)] group-hover:text-[var(--st-text-primary)]'}`} />
                     {isSidebarOpen && (
                       <span className="flex-1 text-left">
                         {item.label}
                       </span>
                     )}
                     {isActive && !isSidebarOpen && (
-                      <motion.div layoutId="active-pill" className="absolute right-0 w-1 h-6 bg-gray-900 rounded-l-full" />
+                      <motion.div layoutId="active-pill" className="absolute right-0 w-1 h-6 rounded-l-full" style={{ background: 'linear-gradient(135deg, #C9A96E, #8B7355)' }} />
                     )}
                   </button>
                 );
@@ -91,25 +91,25 @@ export default function Sidebar() {
           </div>
         </div>
 
-        {/* User Account Section - Refined */}
+        {/* User Account Section */}
         <div className="p-4 mt-auto">
           <div className={`flex items-center gap-3 p-2 rounded-xl transition-all
-            ${isSidebarOpen ? 'hover:bg-gray-50' : 'justify-center'}
+            ${isSidebarOpen ? 'hover:bg-[rgba(201,169,110,0.06)]' : 'justify-center'}
           `}>
-            <div className="w-9 h-9 rounded-lg bg-gray-100 flex items-center justify-center text-xs font-bold text-gray-600 shrink-0 border border-gray-200">
+            <div className="w-9 h-9 rounded-lg flex items-center justify-center text-xs font-bold text-[var(--st-text-on-accent)] shrink-0 shadow-sm" style={{ background: 'linear-gradient(135deg, #C9A96E, #D4B88A)' }}>
               {user?.name?.charAt(0) || 'U'}
             </div>
             {isSidebarOpen && (
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-semibold text-gray-900 truncate">{user?.name}</p>
+                <p className="text-sm font-semibold text-[var(--st-text-primary)] truncate">{user?.name}</p>
                 <div className="flex items-center gap-1.5">
-                   <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                   <p className="text-[10px] text-gray-400 font-medium uppercase tracking-wider">Pro Tier</p>
+                   <div className="w-1.5 h-1.5 rounded-full bg-[var(--st-accent-success)]" />
+                   <p className="text-[10px] text-[var(--st-text-faint)] font-medium uppercase tracking-wider">Pro Tier</p>
                 </div>
               </div>
             )}
             {isSidebarOpen && (
-               <button className="p-1.5 text-gray-400 hover:text-rose-500 hover:bg-rose-50 rounded-md transition-all">
+               <button className="p-1.5 text-[var(--st-text-faint)] hover:text-[var(--st-accent-danger)] hover:bg-[rgba(196,122,106,0.1)] rounded-md transition-all">
                  <LogOut className="w-4 h-4" />
                </button>
             )}

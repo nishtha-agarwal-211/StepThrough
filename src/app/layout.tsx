@@ -24,8 +24,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${spaceGrotesk.variable} dark`} suppressHydrationWarning>
-      <body className="antialiased selection:bg-st-accent selection:text-white bg-[#0a0a0f]">
+    <html lang="en" className={`${inter.variable} ${spaceGrotesk.variable}`} suppressHydrationWarning>
+      <body className="antialiased selection:bg-[var(--st-accent-gold)] selection:text-white">
         <div className="ambient-container">
           <div className="ambient-blob blob-1" />
           <div className="ambient-blob blob-2" />
@@ -33,9 +33,8 @@ export default function RootLayout({
         </div>
         <ThemeProvider
             attribute="class"
-            defaultTheme="dark"
+            defaultTheme="light"
             enableSystem={false}
-            forcedTheme="dark"
             disableTransitionOnChange
         >
           {children}

@@ -84,6 +84,13 @@ export const useAppStore = create<AppState>((set, get) => ({
     const { onboardingAnswers } = get();
     const token = localStorage.getItem('token');
 
+    // Safe JSON parse — avoids crash when backend returns HTML error page
+    const safeJson = async (res: Response) => {
+      const ct = res.headers.get('content-type') || '';
+      if (!ct.includes('application/json')) return null;
+      return res.json().catch(() => null);
+    };
+
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user/quiz`, {
         method: 'PUT',
@@ -94,17 +101,19 @@ export const useAppStore = create<AppState>((set, get) => ({
         body: JSON.stringify(onboardingAnswers),
       });
 
-      const data = await response.json();
-      if (data.success) {
+      const data = await safeJson(response);
+      if (data?.success) {
         set((s) => ({ 
           user: { ...s.user, quizData: data.data },
           isOnboarded: true, 
           currentPage: 'dashboard' 
         }));
+      } else {
+        // Fallback for UI demo if backend is not running
+        set({ isOnboarded: true, currentPage: 'dashboard' });
       }
     } catch (err) {
-      console.error('Failed to save quiz data', err);
-      // Fallback for UI demo if backend is not yet running
+      console.warn('Backend unavailable, using local fallback', err);
       set({ isOnboarded: true, currentPage: 'dashboard' });
     }
   },

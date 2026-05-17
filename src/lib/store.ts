@@ -4,25 +4,26 @@ import {
   Opportunity, DashboardStats, Achievement
 } from './types';
 import {
-  mockUser, activeJourneys, userDocuments,
-  nextActions, opportunities, dashboardStats, achievements
+  opportunities, activeJourneys, userDocuments,
+  nextActions, dashboardStats, achievements
 } from './data';
 
 interface AppState {
   // User
-  user: UserProfile | null;
-  setUser: (user: UserProfile) => void;
+  user: any | null; 
+  setUser: (user: any) => void;
+  logout: () => void;
 
   // Onboarding
   onboardingStep: number;
-  onboardingAnswers: Record<string, string | string[]>;
+  onboardingAnswers: Record<string, any>;
   setOnboardingStep: (step: number) => void;
-  setOnboardingAnswer: (questionId: string, answer: string | string[]) => void;
-  completeOnboarding: () => void;
+  setOnboardingAnswer: (questionId: string, answer: any) => void;
+  completeOnboarding: () => Promise<void>;
   isOnboarded: boolean;
 
   // Navigation
-  currentPage: 'landing' | 'onboarding' | 'dashboard' | 'explore' | 'journey' | 'documents' | 'assistant';
+  currentPage: 'landing' | 'onboarding' | 'dashboard' | 'explore' | 'journey' | 'documents' | 'assistant' | 'schemes';
   setCurrentPage: (page: AppState['currentPage']) => void;
   selectedOpportunityId: string | null;
   setSelectedOpportunityId: (id: string | null) => void;
@@ -57,8 +58,19 @@ interface AppState {
 
 export const useAppStore = create<AppState>((set, get) => ({
   // User
-  user: mockUser,
-  setUser: (user) => set({ user }),
+  user: null,
+  setUser: (user) => {
+    const hasQuizData = user?.quizData && Object.keys(user.quizData).length > 0;
+    set({ 
+      user, 
+      isOnboarded: hasQuizData,
+      currentPage: hasQuizData ? 'dashboard' : 'onboarding'
+    });
+  },
+  logout: () => {
+    localStorage.removeItem('token');
+    set({ user: null, isOnboarded: false, currentPage: 'landing' });
+  },
 
   // Onboarding
   onboardingStep: 0,
@@ -67,7 +79,35 @@ export const useAppStore = create<AppState>((set, get) => ({
   setOnboardingStep: (step) => set({ onboardingStep: step }),
   setOnboardingAnswer: (questionId, answer) =>
     set((s) => ({ onboardingAnswers: { ...s.onboardingAnswers, [questionId]: answer } })),
-  completeOnboarding: () => set({ isOnboarded: true, currentPage: 'dashboard' }),
+  
+  completeOnboarding: async () => {
+    const { onboardingAnswers } = get();
+    const token = localStorage.getItem('token');
+
+    try {
+      const response = await fetch('http://localhost:5001/api/user/quiz', {
+        method: 'PUT',
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(onboardingAnswers),
+      });
+
+      const data = await response.json();
+      if (data.success) {
+        set((s) => ({ 
+          user: { ...s.user, quizData: data.data },
+          isOnboarded: true, 
+          currentPage: 'dashboard' 
+        }));
+      }
+    } catch (err) {
+      console.error('Failed to save quiz data', err);
+      // Fallback for UI demo if backend is not yet running
+      set({ isOnboarded: true, currentPage: 'dashboard' });
+    }
+  },
 
   // Navigation
   currentPage: 'landing',

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Space_Grotesk } from "next/font/google";
 import "./globals.css";
+import { ThemeProvider } from "@/components/theme-provider";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -23,9 +24,23 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${spaceGrotesk.variable}`}>
-      <body className="antialiased selection:bg-st-accent selection:text-white">
-        {children}
+    <html lang="en" className={`${inter.variable} ${spaceGrotesk.variable} dark`} suppressHydrationWarning>
+      <body className="antialiased selection:bg-st-accent selection:text-white bg-[#0a0a0f]">
+        <div className="ambient-container">
+          <div className="ambient-blob blob-1" />
+          <div className="ambient-blob blob-2" />
+          <div className="ambient-blob blob-3" />
+        </div>
+        <ThemeProvider
+            attribute="class"
+            defaultTheme="dark"
+            enableSystem={false}
+            forcedTheme="dark"
+            disableTransitionOnChange
+        >
+          {children}
+          <script src="https://accounts.google.com/gsi/client" async defer></script>
+        </ThemeProvider>
       </body>
     </html>
   );

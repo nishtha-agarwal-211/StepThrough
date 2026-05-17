@@ -3,7 +3,7 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAppStore } from '@/lib/store';
 import { onboardingQuestions } from '@/lib/data';
-import { ChevronRight, ArrowLeft, Sparkles, Check, Zap, Bot } from 'lucide-react';
+import { ArrowLeft, Check, Zap } from 'lucide-react';
 
 export default function OnboardingFlow() {
   const { 
@@ -17,11 +17,11 @@ export default function OnboardingFlow() {
   const currentQuestion = onboardingQuestions[onboardingStep];
   const progress = (onboardingStep / onboardingQuestions.length) * 100;
 
-  const handleNext = () => {
+  const handleNext = async () => {
     if (onboardingStep < onboardingQuestions.length - 1) {
       setOnboardingStep(onboardingStep + 1);
     } else {
-      completeOnboarding();
+      await completeOnboarding();
     }
   };
 
@@ -45,43 +45,54 @@ export default function OnboardingFlow() {
   };
 
   return (
-    <div className="fixed inset-0 z-[100] bg-white flex flex-col items-center justify-center p-4 sm:p-6 md:p-10">
-      {/* Minimal Header */}
-      <div className="w-full max-w-2xl flex items-center justify-between mb-10 sm:mb-20 animate-fade">
-         <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-slate-900 flex items-center justify-center">
-               <Zap className="w-4 h-4 text-white" />
+    <div className="fixed inset-0 z-[100] bg-[var(--st-bg-dark)] flex flex-col items-center justify-center p-6 relative overflow-hidden">
+      {/* Ambient Background Blobs */}
+      <div className="ambient-container">
+        <div className="ambient-blob blob-1 opacity-30" />
+        <div className="ambient-blob blob-2 opacity-30" />
+        <div className="ambient-blob blob-3 opacity-30" />
+      </div>
+
+      {/* Progress Header */}
+      <div className="w-full max-w-2xl flex items-center justify-between mb-16 animate-fade relative z-10">
+         <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-[var(--st-accent-brand)] flex items-center justify-center shadow-md">
+               <Zap className="w-5 h-5 text-white" />
             </div>
-            <span className="font-bold text-slate-900">StepThrough</span>
+            <span className="font-bold text-[var(--st-text-primary)] tracking-tight">StepThrough</span>
          </div>
-         <div className="flex items-center gap-4">
-            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Setup Phase</span>
-            <div className="w-20 st-progress-bar bg-slate-100">
-               <div className="st-progress-fill" style={{ width: `${progress}%` }} />
+         <div className="flex flex-col items-end gap-2">
+            <span className="text-[10px] font-bold text-[var(--st-text-muted)] uppercase tracking-[0.2em] opacity-60">Step {onboardingStep + 1} of {onboardingQuestions.length}</span>
+            <div className="w-32 h-1.5 bg-white border border-[var(--st-glass-border)] relative overflow-hidden rounded-full shadow-inner">
+               <motion.div 
+                 initial={{ width: 0 }}
+                 animate={{ width: `${progress}%` }}
+                 className="absolute inset-y-0 left-0 bg-[var(--st-accent-brand)]" 
+               />
             </div>
          </div>
       </div>
 
       <motion.div 
-        initial={{ opacity: 0, y: 10 }}
+        initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="w-full max-w-2xl"
+        className="w-full max-w-2xl relative z-10"
       >
         <AnimatePresence mode="wait">
           <motion.div
             key={onboardingStep}
-            initial={{ opacity: 0, x: 5 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -5 }}
-            transition={{ duration: 0.3, ease: "easeOut" }}
+            initial={{ opacity: 0, scale: 0.98, y: 5 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.98, y: -5 }}
+            transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
             className="space-y-12"
           >
             <div className="space-y-4">
-              <div className="flex items-center gap-2 text-blue-600">
-                <div className="w-2 h-2 rounded-full bg-blue-600 animate-pulse" />
-                <span className="text-[10px] font-bold uppercase tracking-[0.2em]">Context Discovery</span>
+              <div className="flex items-center gap-3">
+                <span className="text-[10px] font-bold text-[var(--st-accent-primary)] uppercase tracking-[0.25em]">Intelligence Discovery</span>
+                <div className="h-px w-8 bg-[var(--st-accent-primary)]/20" />
               </div>
-              <h1 className="text-2xl sm:text-4xl md:text-5xl font-bold tracking-tight text-slate-900 leading-[1.1]">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-[var(--st-text-primary)] leading-[1.15]">
                 {currentQuestion.question}
               </h1>
             </div>
@@ -96,27 +107,37 @@ export default function OnboardingFlow() {
                   <button
                     key={option.value}
                     onClick={() => handleOptionSelect(option.value)}
-                    className={`flex items-center gap-3 sm:gap-4 p-4 sm:p-6 rounded-2xl border text-left transition-all
+                    className={`flex items-center gap-5 p-6 rounded-[24px] transition-all duration-300 text-left border relative overflow-hidden group shadow-sm
                       ${isSelected 
-                        ? 'bg-blue-50 border-blue-600 shadow-sm ring-1 ring-blue-600/5' 
-                        : 'bg-white border-slate-200 hover:border-slate-300 hover:bg-slate-50'
+                        ? 'bg-white border-[var(--st-accent-brand)] shadow-md ring-1 ring-[var(--st-accent-brand)]/20' 
+                        : 'bg-white/50 border-[var(--st-glass-border)] hover:border-[var(--st-accent-primary)] hover:bg-white'
                       }
                     `}
                   >
-                    <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center text-xl transition-all
-                      ${isSelected ? 'bg-blue-600 text-white' : 'bg-slate-50 text-slate-400'}
+                    {isSelected && (
+                      <motion.div 
+                        layoutId="selection-glow"
+                        className="absolute inset-0 bg-[var(--st-accent-brand)]/5 blur-2xl"
+                      />
+                    )}
+                    <div className={`w-12 h-12 rounded-[18px] flex items-center justify-center text-2xl transition-all duration-300 border
+                      ${isSelected ? 'bg-[var(--st-accent-brand)] border-[var(--st-accent-brand)] text-white shadow-md' : 'bg-white border-[var(--st-glass-border)] text-[var(--st-text-muted)] group-hover:text-[var(--st-text-primary)]'}
                     `}>
-                      {option.icon || <Check className="w-5 h-5" />}
+                      {option.icon || <Check className="w-6 h-6" />}
                     </div>
-                    <div className="flex-1">
-                      <p className={`font-semibold text-[15px] ${isSelected ? 'text-slate-900' : 'text-slate-600'}`}>
+                    <div className="flex-1 min-w-0">
+                      <p className={`font-bold text-[16px] transition-all ${isSelected ? 'text-[var(--st-text-primary)]' : 'text-[var(--st-text-muted)] group-hover:text-[var(--st-text-primary)]'}`}>
                         {option.label}
                       </p>
                     </div>
                     {isSelected && (
-                      <div className="w-5 h-5 rounded-full bg-blue-600 flex items-center justify-center">
-                        <Check className="w-3 h-3 text-white" />
-                      </div>
+                      <motion.div 
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        className="w-6 h-6 rounded-full bg-[var(--st-accent-brand)] flex items-center justify-center shadow-md"
+                      >
+                        <Check className="w-4 h-4 text-white" />
+                      </motion.div>
                     )}
                   </button>
                 );
@@ -127,7 +148,8 @@ export default function OnboardingFlow() {
                   <input 
                     type="number" 
                     placeholder={currentQuestion.placeholder}
-                    className="w-full bg-slate-50 border border-slate-200 rounded-2xl p-4 sm:p-8 text-xl sm:text-3xl font-bold text-center focus:outline-none focus:border-blue-600 focus:ring-4 focus:ring-blue-100 transition-all"
+                    autoFocus
+                    className="w-full bg-white border border-[var(--st-glass-border)] rounded-[28px] p-8 text-3xl sm:text-5xl font-bold text-center text-[var(--st-text-primary)] focus:outline-none focus:border-[var(--st-accent-primary)] focus:shadow-md transition-all placeholder:text-[var(--st-text-muted)] opacity-80 shadow-sm"
                     onChange={(e) => setOnboardingAnswer(currentQuestion.id, e.target.value)}
                   />
                 </div>
@@ -138,7 +160,8 @@ export default function OnboardingFlow() {
                   <input 
                     type="text" 
                     placeholder={currentQuestion.placeholder}
-                    className="w-full bg-slate-50 border border-slate-200 rounded-2xl p-4 sm:p-8 text-lg sm:text-xl font-semibold focus:outline-none focus:border-blue-600 focus:ring-4 focus:ring-blue-100 transition-all"
+                    autoFocus
+                    className="w-full bg-white border border-[var(--st-glass-border)] rounded-[28px] p-8 text-xl sm:text-3xl font-bold text-[var(--st-text-primary)] focus:outline-none focus:border-[var(--st-accent-primary)] focus:shadow-md transition-all placeholder:text-[var(--st-text-muted)] opacity-80 shadow-sm"
                     onChange={(e) => setOnboardingAnswer(currentQuestion.id, e.target.value)}
                   />
                 </div>
@@ -148,12 +171,12 @@ export default function OnboardingFlow() {
         </AnimatePresence>
 
         {/* Footer Navigation */}
-        <div className="mt-10 sm:mt-20 flex items-center justify-between border-t border-slate-100 pt-6 sm:pt-10">
+        <div className="mt-20 flex items-center justify-between border-t border-white/5 pt-10">
           <button 
             onClick={handleBack}
             disabled={onboardingStep === 0}
-            className={`flex items-center gap-2 text-xs font-bold transition-all
-              ${onboardingStep === 0 ? 'opacity-0 pointer-events-none' : 'text-slate-400 hover:text-slate-900'}
+            className={`flex items-center gap-3 text-[11px] font-bold uppercase tracking-widest transition-all
+              ${onboardingStep === 0 ? 'opacity-0 pointer-events-none' : 'text-[var(--st-text-muted)] hover:text-[var(--st-text-primary)]'}
             `}
           >
             <ArrowLeft className="w-4 h-4" /> Go Back
@@ -162,25 +185,32 @@ export default function OnboardingFlow() {
           {(currentQuestion.type === 'multiple' || currentQuestion.type === 'range' || currentQuestion.type === 'location') && (
             <button 
               onClick={handleNext}
-              className="btn-primary py-3 px-8 text-sm"
+              className="btn-glass-primary h-14 px-10 text-[12px] font-bold uppercase tracking-[0.2em]"
             >
-              Continue Pathway
+              Continue Journey
             </button>
           )}
           
           {currentQuestion.type === 'single' && (
-             <p className="text-[10px] font-bold text-slate-300 uppercase tracking-widest">Auto-progressing...</p>
+             <div className="flex items-center gap-3 text-[var(--st-accent-primary)] opacity-40">
+                <span className="text-[10px] font-bold uppercase tracking-[0.2em]">Processing Profile...</span>
+                <div className="flex gap-1">
+                   <div className="w-1 h-1 rounded-full bg-[var(--st-accent-primary)] animate-bounce" style={{ animationDelay: '0ms' }} />
+                   <div className="w-1 h-1 rounded-full bg-[var(--st-accent-primary)] animate-bounce" style={{ animationDelay: '150ms' }} />
+                   <div className="w-1 h-1 rounded-full bg-[var(--st-accent-primary)] animate-bounce" style={{ animationDelay: '300ms' }} />
+                </div>
+             </div>
           )}
         </div>
       </motion.div>
 
       {/* Subtle reassurance */}
-      <div className="mt-10 sm:mt-20 flex items-center gap-4 sm:gap-6 opacity-30 animate-fade flex-wrap justify-center">
-         <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-slate-500">Government Verified</span>
-         <div className="w-1 h-1 rounded-full bg-slate-300" />
-         <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-slate-500">Secure Vault</span>
-         <div className="w-1 h-1 rounded-full bg-slate-300" />
-         <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-slate-500">Human Assisted</span>
+      <div className="mt-20 flex items-center gap-8 opacity-40 animate-fade flex-wrap justify-center">
+         <span className="text-[9px] font-bold uppercase tracking-[0.25em] text-[var(--st-text-muted)]">Verified Protocol</span>
+         <div className="w-1.5 h-1.5 rounded-full bg-[var(--st-glass-border)]" />
+         <span className="text-[9px] font-bold uppercase tracking-[0.25em] text-[var(--st-text-muted)]">Secure Identity Vault</span>
+         <div className="w-1.5 h-1.5 rounded-full bg-[var(--st-glass-border)]" />
+         <span className="text-[9px] font-bold uppercase tracking-[0.25em] text-[var(--st-text-muted)]">AI Optimized</span>
       </div>
     </div>
   );

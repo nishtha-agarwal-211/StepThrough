@@ -38,7 +38,7 @@ export default function AssistantPanel() {
     setIsTyping(true);
     
     try {
-      const res = await fetch('http://localhost:5001/api/schemes/ask', {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/schemes/ask`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ question: userMessage })

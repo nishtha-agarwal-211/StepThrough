@@ -12,7 +12,7 @@ interface JourneyProgressCardProps {
 export default function JourneyProgressCard({ journey, onClick }: JourneyProgressCardProps) {
   return (
     <motion.div
-      whileHover={{ y: -4, shadow: '0 20px 25px -5px rgb(0 0 0 / 0.1)' }}
+      whileHover={{ y: -4, boxShadow: '0 20px 25px -5px rgb(0 0 0 / 0.1)' }}
       onClick={onClick}
       className="bg-white border border-gray-100 p-6 cursor-pointer group relative overflow-hidden rounded-2xl transition-all duration-300"
     >

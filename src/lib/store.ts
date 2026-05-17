@@ -85,7 +85,7 @@ export const useAppStore = create<AppState>((set, get) => ({
     const token = localStorage.getItem('token');
 
     try {
-      const response = await fetch('http://localhost:5001/api/user/quiz', {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user/quiz`, {
         method: 'PUT',
         headers: { 
           'Content-Type': 'application/json',

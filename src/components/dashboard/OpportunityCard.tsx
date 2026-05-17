@@ -12,7 +12,7 @@ interface OpportunityCardProps {
 export default function OpportunityCard({ opportunity, onClick }: OpportunityCardProps) {
   return (
     <motion.div
-      whileHover={{ y: -8, shadow: '0 25px 50px -12px rgb(0 0 0 / 0.1)' }}
+      whileHover={{ y: -8, boxShadow: '0 25px 50px -12px rgb(0 0 0 / 0.1)' }}
       onClick={onClick}
       className="bg-white border border-gray-100 p-8 flex flex-col group cursor-pointer h-full relative rounded-2xl transition-all duration-500 overflow-hidden"
     >

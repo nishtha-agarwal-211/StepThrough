@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 import {
   UserProfile, Journey, Document, NextAction,
   Opportunity, DashboardStats, Achievement
@@ -56,7 +57,9 @@ interface AppState {
   setActiveFilter: (f: string) => void;
 }
 
-export const useAppStore = create<AppState>((set, get) => ({
+export const useAppStore = create<AppState>()(
+  persist(
+    (set, get) => ({
   // User
   user: null,
   setUser: (user) => {
@@ -83,16 +86,10 @@ export const useAppStore = create<AppState>((set, get) => ({
   completeOnboarding: async () => {
     const { onboardingAnswers } = get();
     const token = localStorage.getItem('token');
-
-    // Safe JSON parse — avoids crash when backend returns HTML error page
-    const safeJson = async (res: Response) => {
-      const ct = res.headers.get('content-type') || '';
-      if (!ct.includes('application/json')) return null;
-      return res.json().catch(() => null);
-    };
+    const base = process.env.NEXT_PUBLIC_API_URL || '';
 
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user/quiz`, {
+      const response = await fetch(`${base}/api/user/quiz`, {
         method: 'PUT',
         headers: { 
           'Content-Type': 'application/json',
@@ -101,7 +98,7 @@ export const useAppStore = create<AppState>((set, get) => ({
         body: JSON.stringify(onboardingAnswers),
       });
 
-      const data = await safeJson(response);
+      const data = await response.json().catch(() => null);
       if (data?.success) {
         set((s) => ({ 
           user: { ...s.user, quizData: data.data },
@@ -109,11 +106,12 @@ export const useAppStore = create<AppState>((set, get) => ({
           currentPage: 'dashboard' 
         }));
       } else {
-        // Fallback for UI demo if backend is not running
+        console.error('Failed to save quiz data:', data?.error);
+        // We still let them through for the demo, but in a real app you might block them
         set({ isOnboarded: true, currentPage: 'dashboard' });
       }
     } catch (err) {
-      console.warn('Backend unavailable, using local fallback', err);
+      console.error('Backend unavailable', err);
       set({ isOnboarded: true, currentPage: 'dashboard' });
     }
   },
@@ -200,4 +198,15 @@ export const useAppStore = create<AppState>((set, get) => ({
   setSearchQuery: (q) => set({ searchQuery: q }),
   activeFilter: 'all',
   setActiveFilter: (f) => set({ activeFilter: f }),
-}));
+    }),
+    {
+      name: 'stepthrough-storage',
+      partialize: (state) => ({ 
+        isOnboarded: state.isOnboarded,
+        user: state.user,
+        currentPage: state.currentPage,
+        onboardingAnswers: state.onboardingAnswers
+      }),
+    }
+  )
+);

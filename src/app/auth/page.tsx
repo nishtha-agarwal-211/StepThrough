@@ -23,21 +23,23 @@ export default function AuthPage() {
     }
   }, []);
 
+  const getApiUrl = (endpoint: string) => {
+    const base = process.env.NEXT_PUBLIC_API_URL || '';
+    return `${base}${endpoint}`;
+  };
+
   const handleGoogleCallback = async (response: any) => {
     setLoading(true); setError('');
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/google`, {
+      const res = await fetch(getApiUrl('/api/auth/google'), {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ credential: response.credential }),
       });
-      const ct = res.headers.get('content-type') || '';
-      if (!res.ok || !ct.includes('application/json')) throw new Error('Backend unavailable');
-      const data = await res.json();
-      if (data.success) { localStorage.setItem('token', data.token); setUser(data.user); }
-      else { setError(data.error || 'Google login failed'); }
+      const data = await res.json().catch(() => null);
+      if (data?.success) { localStorage.setItem('token', data.token); setUser(data.user); }
+      else { setError(data?.error || 'Google login failed'); }
     } catch (err) {
-      const mockUser = { id: 'demo-google-123', name: 'Demo Google User', email: 'demo@google.com', quizData: {} };
-      localStorage.setItem('token', 'mock-jwt-token-123'); setUser(mockUser);
+      setError('Failed to connect to the authentication server.');
     } finally { setLoading(false); }
   };
 
@@ -51,17 +53,14 @@ export default function AuthPage() {
     try {
       const endpoint = isLogin ? '/api/auth/login' : '/api/auth/signup';
       const body = isLogin ? { email, password } : { name, email, password };
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}${endpoint}`, {
+      const response = await fetch(getApiUrl(endpoint), {
         method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body),
       });
-      const ct = response.headers.get('content-type') || '';
-      if (!response.ok || !ct.includes('application/json')) throw new Error('Backend unavailable');
-      const data = await response.json();
-      if (data.success) { localStorage.setItem('token', data.token); setUser(data.user); }
-      else { setError(data.error || 'Something went wrong'); }
+      const data = await response.json().catch(() => null);
+      if (data?.success) { localStorage.setItem('token', data.token); setUser(data.user); }
+      else { setError(data?.error || 'Authentication failed. Please try again.'); }
     } catch (err) {
-      const mockUser = { id: 'demo-123', name: name || 'Demo User', email, quizData: {} };
-      localStorage.setItem('token', 'mock-jwt-token-123'); setUser(mockUser);
+      setError('Failed to connect to the authentication server.');
     } finally { setLoading(false); }
   };
 

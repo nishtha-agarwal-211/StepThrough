@@ -86,15 +86,12 @@ export default function OnboardingFlow() {
 
                 return (
                   <button key={option.value} onClick={() => handleOptionSelect(option.value)}
-                    className={`flex items-center gap-5 p-6 rounded-[24px] transition-all duration-300 text-left relative overflow-hidden group shadow-sm
+                    className={`glass-card flex items-center gap-5 p-6 transition-all duration-300 text-left relative overflow-hidden group
                       ${isSelected
-                        ? 'shadow-md ring-1'
-                        : 'hover:bg-[var(--st-glass-surface-hover)]'}
+                        ? 'ring-1 ring-[var(--st-accent-gold)] shadow-lg'
+                        : ''}
                     `}
-                    style={isSelected
-                      ? { background: 'var(--st-glass-surface-hover)', border: '1px solid rgba(201,169,110,0.4)', boxShadow: '0 8px 32px rgba(201,169,110,0.12)' }
-                      : { background: 'var(--st-glass-surface)', border: '1px solid var(--st-glass-border)' }
-                    }
+                    style={{ borderRadius: '24px' }}
                   >
                     {isSelected && (
                       <motion.div layoutId="selection-glow" className="absolute inset-0 blur-2xl" style={{ background: 'rgba(201,169,110,0.06)' }} />
@@ -124,10 +121,7 @@ export default function OnboardingFlow() {
               {currentQuestion.type === 'range' && (
                 <div className="col-span-2">
                   <input type="number" placeholder={currentQuestion.placeholder} autoFocus
-                    className="w-full border rounded-[28px] p-8 text-3xl sm:text-5xl font-bold text-center text-[var(--st-text-primary)] focus:outline-none transition-all placeholder:text-[var(--st-text-faint)] opacity-80 shadow-sm"
-                    style={{ background: 'var(--st-glass-surface)', borderColor: 'var(--st-glass-border)' }}
-                    onFocus={(e) => { e.target.style.borderColor = 'rgba(201,169,110,0.4)'; e.target.style.boxShadow = '0 8px 32px rgba(201,169,110,0.1)'; }}
-                    onBlur={(e) => { e.target.style.borderColor = 'var(--st-glass-border)'; e.target.style.boxShadow = 'none'; }}
+                    className="input-liquid w-full p-8 text-3xl sm:text-5xl font-bold text-center placeholder:text-[var(--st-text-faint)]"
                     onChange={(e) => setOnboardingAnswer(currentQuestion.id, e.target.value)}
                   />
                 </div>
@@ -136,10 +130,7 @@ export default function OnboardingFlow() {
               {currentQuestion.type === 'location' && (
                 <div className="col-span-2">
                   <input type="text" placeholder={currentQuestion.placeholder} autoFocus
-                    className="w-full border rounded-[28px] p-8 text-xl sm:text-3xl font-bold text-[var(--st-text-primary)] focus:outline-none transition-all placeholder:text-[var(--st-text-faint)] opacity-80 shadow-sm"
-                    style={{ background: 'var(--st-glass-surface)', borderColor: 'var(--st-glass-border)' }}
-                    onFocus={(e) => { e.target.style.borderColor = 'rgba(201,169,110,0.4)'; e.target.style.boxShadow = '0 8px 32px rgba(201,169,110,0.1)'; }}
-                    onBlur={(e) => { e.target.style.borderColor = 'var(--st-glass-border)'; e.target.style.boxShadow = 'none'; }}
+                    className="input-liquid w-full p-8 text-xl sm:text-3xl font-bold placeholder:text-[var(--st-text-faint)]"
                     onChange={(e) => setOnboardingAnswer(currentQuestion.id, e.target.value)}
                   />
                 </div>

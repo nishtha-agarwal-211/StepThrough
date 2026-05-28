@@ -30,7 +30,8 @@ export default function AssistantPanel() {
     setMessages(prev => [...prev, { role: 'user', text: userMessage }]);
     setInput(''); setIsTyping(true);
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/schemes/ask`, {
+      const apiBase = process.env.NEXT_PUBLIC_API_URL || '';
+      const res = await fetch(`${apiBase}/api/schemes/ask`, {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ question: userMessage })
       });

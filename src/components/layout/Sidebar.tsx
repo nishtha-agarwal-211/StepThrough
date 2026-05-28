@@ -18,7 +18,7 @@ const navItems = [
 ];
 
 export default function Sidebar() {
-  const { currentPage, setCurrentPage, isSidebarOpen, toggleSidebar, user } = useAppStore();
+  const { currentPage, setCurrentPage, isSidebarOpen, toggleSidebar, user, logout } = useAppStore();
 
   return (
     <>
@@ -109,7 +109,10 @@ export default function Sidebar() {
               </div>
             )}
             {isSidebarOpen && (
-               <button className="p-1.5 text-[var(--st-text-faint)] hover:text-[var(--st-accent-danger)] hover:bg-[rgba(196,122,106,0.1)] rounded-md transition-all">
+               <button 
+                 onClick={logout}
+                 className="p-1.5 text-[var(--st-text-faint)] hover:text-[var(--st-accent-danger)] hover:bg-[rgba(196,122,106,0.1)] rounded-md transition-all"
+               >
                  <LogOut className="w-4 h-4" />
                </button>
             )}

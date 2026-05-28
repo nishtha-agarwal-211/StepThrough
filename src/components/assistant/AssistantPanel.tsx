@@ -31,15 +31,43 @@ export default function AssistantPanel() {
     setInput(''); setIsTyping(true);
     try {
       const apiBase = process.env.NEXT_PUBLIC_API_URL || '';
-      const res = await fetch(`${apiBase}/api/schemes/ask`, {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ question: userMessage })
-      });
-      const ct = res.headers.get('content-type') || '';
-      if (!res.ok || !ct.includes('application/json')) throw new Error('Backend unavailable');
+      let res;
+      let usingLocalFallback = false;
+      
+      try {
+        res = await fetch(`${apiBase}/api/schemes/ask`, {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ question: userMessage }),
+          signal: AbortSignal.timeout(6000) // 6-second timeout for Hugging Face wake check
+        });
+        const ct = res.headers.get('content-type') || '';
+        if (!res.ok || !ct.includes('application/json')) {
+          throw new Error('HF backend returned status ' + res.status);
+        }
+      } catch (hfErr) {
+        if (apiBase) {
+          console.warn('HF Space connection failed, falling back to Next.js local search:', hfErr);
+          usingLocalFallback = true;
+          res = await fetch(`/api/schemes/ask`, {
+            method: 'POST', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ question: userMessage })
+          });
+          const ct = res.headers.get('content-type') || '';
+          if (!res.ok || !ct.includes('application/json')) {
+            throw new Error('Local fallback failed');
+          }
+        } else {
+          throw hfErr;
+        }
+      }
+
       const data = await res.json();
       if (data.success && data.data?.answer) {
-        setMessages(prev => [...prev, { role: 'assistant', text: data.data.answer }]);
+        let answer = data.data.answer;
+        if (usingLocalFallback) {
+          answer = "⚡ *(Hugging Face Space is waking up. Serving response via local search fallback)*\n\n" + answer;
+        }
+        setMessages(prev => [...prev, { role: 'assistant', text: answer }]);
       } else {
         setMessages(prev => [...prev, { role: 'assistant', text: "I'm sorry, I couldn't process your request right now. Please try again." }]);
       }

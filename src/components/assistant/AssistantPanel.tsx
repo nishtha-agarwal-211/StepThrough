@@ -53,52 +53,52 @@ export default function AssistantPanel() {
       {isAssistantOpen && (
         <>
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[55]"
-            style={{ background: 'rgba(30,26,23,0.25)', backdropFilter: 'blur(4px)', WebkitBackdropFilter: 'blur(4px)' }}
+            className="fixed inset-0 z-[55] cursor-pointer"
+            style={{ background: 'rgba(15,23,42,0.3)', backdropFilter: 'blur(4px)', WebkitBackdropFilter: 'blur(4px)' }}
             onClick={toggleAssistant} />
           <motion.div
             initial={{ x: '100%' }} animate={{ x: 0 }} exit={{ x: '100%' }}
             transition={{ type: 'spring', damping: 28, stiffness: 220 }}
             className="fixed right-0 top-0 h-full w-full md:w-[450px] z-[60] flex flex-col"
             style={{
-              background: 'rgba(246,241,235,0.85)',
+              background: 'rgba(250,250,249,0.98)',
               backdropFilter: 'blur(24px) saturate(180%)',
               WebkitBackdropFilter: 'blur(24px) saturate(180%)',
               borderLeft: '1px solid var(--st-glass-border)',
-              boxShadow: '0 0 80px rgba(139,115,85,0.15)'
+              boxShadow: '0 0 40px rgba(15,23,42,0.08)'
             }}>
           {/* Header */}
-          <div className="p-8 border-b border-[var(--st-glass-border)] flex items-center justify-between" style={{ background: 'rgba(246,241,235,0.6)' }}>
+          <div className="p-6 border-b border-[var(--st-glass-border)] flex items-center justify-between" style={{ background: 'rgba(250,250,249,0.8)' }}>
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-md relative" style={{ background: 'linear-gradient(135deg, #C9A96E, #8B7355)' }}>
+              <div className="w-12 h-12 rounded-xl flex items-center justify-center shadow-sm relative animate-pulse" style={{ background: 'var(--st-gradient-hero)' }}>
                 <Bot className="w-6 h-6 text-white" />
-                <span className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 rounded-full border-2" style={{ background: 'var(--st-accent-success)', borderColor: 'var(--st-bg-base)' }} />
+                <span className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 rounded-full border-2 border-white" style={{ background: 'var(--st-accent-success)' }} />
               </div>
               <div>
                 <h3 className="text-lg font-bold text-[var(--st-text-primary)] tracking-tight">AI Mentor</h3>
                 <div className="flex items-center gap-2">
-                  <span className="text-[10px] font-bold text-[var(--st-text-faint)] uppercase tracking-[0.2em]">Contextual Intelligence</span>
+                  <span className="text-[10px] font-bold text-[var(--st-text-faint)] uppercase tracking-[0.2em]">Certified Assistant</span>
                 </div>
               </div>
             </div>
             <button onClick={toggleAssistant}
-              className="p-2.5 rounded-xl hover:bg-[var(--st-glass-surface-hover)] transition-all text-[var(--st-text-faint)] hover:text-[var(--st-text-primary)] border border-[var(--st-glass-border)]">
+              className="p-2.5 rounded-xl hover:bg-[var(--st-bg-blue-tint)] transition-all text-[var(--st-text-faint)] hover:text-[var(--st-text-primary)] border border-[var(--st-glass-border-strong)] cursor-pointer">
               <X className="w-5 h-5" />
             </button>
           </div>
 
           {/* Chat Area */}
-          <div className="flex-1 overflow-y-auto p-8 space-y-8">
+          <div className="flex-1 overflow-y-auto p-6 space-y-6">
             {messages.map((msg, i) => (
               <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} key={i}
                 className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                <div className="max-w-[85%] p-5 rounded-2xl text-[14px] leading-relaxed whitespace-pre-wrap relative overflow-hidden shadow-sm"
+                <div className="max-w-[85%] p-4 rounded-xl text-[14px] leading-relaxed whitespace-pre-wrap relative overflow-hidden shadow-sm border border-slate-100"
                   style={msg.role === 'user'
-                    ? { background: 'linear-gradient(135deg, #C9A96E, #8B7355)', color: 'white', fontWeight: 500 }
-                    : { background: 'var(--st-glass-surface-hover)', border: '1px solid var(--st-glass-border)', color: 'var(--st-text-primary)', fontWeight: 500 }
+                    ? { background: 'var(--st-gradient-hero)', color: 'white', fontWeight: 500 }
+                    : { background: '#FFFFFF', border: '1px solid var(--st-glass-border-strong)', color: 'var(--st-text-primary)', fontWeight: 500 }
                   }>
                   {msg.role === 'assistant' && (
-                    <div className="absolute top-0 left-0 w-1 h-full" style={{ background: 'linear-gradient(180deg, #C9A96E, #8B7355)', opacity: 0.4 }} />
+                    <div className="absolute top-0 left-0 w-1 h-full" style={{ background: 'var(--st-gradient-gold)', opacity: 0.8 }} />
                   )}
                   {msg.text}
                 </div>
@@ -106,10 +106,10 @@ export default function AssistantPanel() {
             ))}
             {isTyping && (
               <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="flex justify-start">
-                <div className="max-w-[85%] px-5 py-4 rounded-2xl border border-[var(--st-glass-border)] flex gap-2 items-center h-12 shadow-sm" style={{ background: 'var(--st-glass-surface-hover)' }}>
-                  <span className="w-1.5 h-1.5 rounded-full animate-bounce" style={{ background: 'var(--st-accent-gold)', animationDelay: '0ms' }} />
-                  <span className="w-1.5 h-1.5 rounded-full animate-bounce" style={{ background: 'var(--st-accent-gold)', animationDelay: '150ms' }} />
-                  <span className="w-1.5 h-1.5 rounded-full animate-bounce" style={{ background: 'var(--st-accent-gold)', animationDelay: '300ms' }} />
+                <div className="max-w-[85%] px-5 py-4 rounded-xl border border-[var(--st-glass-border)] flex gap-2 items-center h-12 shadow-sm bg-white">
+                  <span className="w-1.5 h-1.5 rounded-full animate-bounce bg-[var(--st-accent-mocha)]" style={{ animationDelay: '0ms' }} />
+                  <span className="w-1.5 h-1.5 rounded-full animate-bounce bg-[var(--st-accent-mocha)]" style={{ animationDelay: '150ms' }} />
+                  <span className="w-1.5 h-1.5 rounded-full animate-bounce bg-[var(--st-accent-mocha)]" style={{ animationDelay: '300ms' }} />
                 </div>
               </motion.div>
             )}
@@ -117,13 +117,12 @@ export default function AssistantPanel() {
           </div>
 
           {/* Input Area */}
-          <div className="p-8 border-t border-[var(--st-glass-border)]" style={{ background: 'rgba(246,241,235,0.6)' }}>
+          <div className="p-6 border-t border-[var(--st-glass-border)] bg-slate-50" style={{ background: 'rgba(250,250,249,0.8)' }}>
             {messages.length < 3 && (
-              <div className="mb-6 flex flex-wrap gap-2.5">
+              <div className="mb-4 flex flex-wrap gap-2">
                 {suggestions.map((s, i) => (
                   <button key={i} onClick={() => setInput(s)}
-                    className="text-[10px] font-bold uppercase tracking-wider px-3.5 py-2 rounded-xl border border-[var(--st-glass-border)] text-[var(--st-text-faint)] hover:text-[var(--st-text-primary)] hover:border-[var(--st-accent-gold)]/30 transition-all shadow-sm"
-                    style={{ background: 'var(--st-glass-surface)' }}>
+                    className="text-[10px] font-bold uppercase tracking-wider px-3 py-1.5 rounded-lg border border-[var(--st-glass-border-strong)] text-[var(--st-text-secondary)] hover:text-[var(--st-text-primary)] hover:border-[var(--st-accent-mocha)]/40 hover:bg-[var(--st-bg-blue-tint)] transition-all shadow-sm bg-white cursor-pointer">
                     {s}
                   </button>
                 ))}
@@ -133,21 +132,21 @@ export default function AssistantPanel() {
               <input type="text" value={input} onChange={(e) => setInput(e.target.value)}
                 onKeyPress={(e) => e.key === 'Enter' && handleSend()}
                 disabled={isTyping} placeholder="Ask your mentor anything..."
-                className="w-full border rounded-2xl py-4 pl-5 pr-14 text-sm text-[var(--st-text-primary)] focus:outline-none transition-all placeholder:text-[var(--st-text-faint)] disabled:opacity-50"
-                style={{ background: 'var(--st-glass-surface-hover)', borderColor: 'var(--st-glass-border)' }}
-                onFocus={(e) => { e.target.style.borderColor = 'rgba(201,169,110,0.3)'; e.target.style.boxShadow = '0 4px 16px rgba(201,169,110,0.08)'; }}
-                onBlur={(e) => { e.target.style.borderColor = 'var(--st-glass-border)'; e.target.style.boxShadow = 'none'; }}
+                className="w-full border rounded-xl py-3.5 pl-4 pr-14 text-sm text-[var(--st-text-primary)] focus:outline-none transition-all placeholder:text-[var(--st-text-faint)] disabled:opacity-50"
+                style={{ background: '#FFFFFF', borderColor: 'var(--st-glass-border-strong)' }}
+                onFocus={(e) => { e.target.style.borderColor = 'var(--st-accent-mocha)'; e.target.style.boxShadow = '0 0 0 3px rgba(10,48,84,0.08)'; }}
+                onBlur={(e) => { e.target.style.borderColor = 'var(--st-glass-border-strong)'; e.target.style.boxShadow = 'none'; }}
               />
               <button onClick={handleSend} disabled={isTyping || !input.trim()}
-                className="absolute right-2.5 top-1/2 -translate-y-1/2 w-10 h-10 rounded-xl flex items-center justify-center text-white disabled:text-[var(--st-text-faint)] transition-all shadow-md"
+                className="absolute right-2 top-1/2 -translate-y-1/2 w-9 h-9 rounded-lg flex items-center justify-center text-white disabled:text-[var(--st-text-faint)] transition-all shadow-sm cursor-pointer"
                 style={isTyping || !input.trim()
-                  ? { background: 'var(--st-glass-surface)', boxShadow: 'none' }
-                  : { background: 'linear-gradient(135deg, #C9A96E, #8B7355)' }
+                  ? { background: 'var(--st-bg-warm)', boxShadow: 'none' }
+                  : { background: 'var(--st-gradient-gold)' }
                 }>
                 <Send className="w-4 h-4" />
               </button>
             </div>
-            <div className="mt-6 flex items-center justify-center gap-8 opacity-40 text-[var(--st-text-faint)]">
+            <div className="mt-4 flex items-center justify-center gap-6 opacity-30 text-[var(--st-text-faint)]">
               <Sparkles className="w-4 h-4" /><Zap className="w-4 h-4" /><ShieldQuestion className="w-4 h-4" /><HelpCircle className="w-4 h-4" />
             </div>
           </div>

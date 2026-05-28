@@ -52,9 +52,9 @@ const categoryIcons: Record<string, React.ReactNode> = {
 };
 
 const priorityStyles: Record<string, { bg: string; color: string; border: string }> = {
-  high: { bg: 'rgba(196,122,106,0.1)', color: 'var(--st-accent-danger)', border: 'rgba(196,122,106,0.2)' },
-  medium: { bg: 'rgba(212,165,90,0.1)', color: 'var(--st-accent-warning)', border: 'rgba(212,165,90,0.2)' },
-  low: { bg: 'rgba(126,174,123,0.1)', color: 'var(--st-accent-success)', border: 'rgba(126,174,123,0.2)' },
+  high: { bg: 'rgba(220,38,38,0.06)', color: 'var(--st-accent-danger)', border: 'rgba(220,38,38,0.15)' },
+  medium: { bg: 'rgba(180,83,9,0.06)', color: 'var(--st-accent-warning)', border: 'rgba(180,83,9,0.15)' },
+  low: { bg: 'rgba(21,128,61,0.06)', color: 'var(--st-accent-success)', border: 'rgba(21,128,61,0.15)' },
 };
 
 export default function ActionPlanModal({ isOpen, onClose }: ActionPlanModalProps) {
@@ -141,44 +141,44 @@ export default function ActionPlanModal({ isOpen, onClose }: ActionPlanModalProp
       {isOpen && (
         <>
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-[rgba(30,26,23,0.4)] backdrop-blur-md z-[60]" onClick={onClose} />
+            className="fixed inset-0 bg-[rgba(15,23,42,0.3)] backdrop-blur-sm z-[60]" onClick={onClose} />
 
           <motion.div
-            initial={{ opacity: 0, y: 100, scale: 0.9 }}
+            initial={{ opacity: 0, y: 50, scale: 0.96 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 100, scale: 0.9 }}
-            transition={{ type: 'spring', damping: 25, stiffness: 350 }}
-            className="fixed inset-x-4 top-[8vh] bottom-[8vh] md:inset-x-auto md:left-1/2 md:-translate-x-1/2 md:w-[720px] z-[61] glass-elevated flex flex-col overflow-hidden rounded-3xl"
+            exit={{ opacity: 0, y: 50, scale: 0.96 }}
+            transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+            className="fixed inset-x-4 top-[8vh] bottom-[8vh] md:inset-x-auto md:left-1/2 md:-translate-x-1/2 md:w-[720px] z-[61] glass-elevated flex flex-col overflow-hidden rounded-2xl"
           >
             {/* Header */}
-            <div className="flex items-center justify-between px-8 py-6 border-b border-[var(--st-glass-border)]" style={{ background: 'rgba(246,241,235,0.8)' }}>
+            <div className="flex items-center justify-between px-8 py-6 border-b border-[var(--st-glass-border)] bg-[#FAFAF9]">
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-md" style={{ background: 'linear-gradient(135deg, #C9A96E, #8B7355)' }}>
-                  <Sparkles className="w-6 h-6 text-white" />
+                <div className="w-12 h-12 rounded-xl flex items-center justify-center shadow-sm" style={{ background: 'var(--st-gradient-hero)' }}>
+                  <Sparkles className="w-6 h-6 text-[var(--st-accent-gold)]" />
                 </div>
                 <div>
                   <h2 className="text-xl font-bold text-[var(--st-text-primary)] tracking-tight">AI Action Plan</h2>
-                  <p className="text-[11px] font-bold text-[var(--st-text-faint)] uppercase tracking-[0.2em] mt-0.5">Optimized 7-Day Journey</p>
+                  <p className="text-[10px] font-bold text-[var(--st-text-faint)] uppercase tracking-[0.2em] mt-0.5">Optimized 7-Day Journey</p>
                 </div>
               </div>
               <div className="flex items-center gap-3">
                 {plan && (
                   <button onClick={generatePlan} disabled={loading}
-                    className="p-2.5 rounded-xl hover:bg-[rgba(201,169,110,0.08)] transition-all border border-[var(--st-glass-border)] text-[var(--st-text-faint)] hover:text-[var(--st-text-primary)]" title="Regenerate">
+                    className="p-2.5 rounded-xl hover:bg-[rgba(10,48,84,0.05)] transition-all border border-[var(--st-glass-border)] text-[var(--st-text-faint)] hover:text-[var(--st-text-primary)] cursor-pointer" title="Regenerate">
                     <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
                   </button>
                 )}
                 <button onClick={onClose}
-                  className="p-2.5 rounded-xl bg-[var(--st-glass-surface)] hover:bg-[var(--st-glass-surface-hover)] transition-all border border-[var(--st-glass-border)] text-[var(--st-text-faint)] hover:text-[var(--st-text-primary)]">
+                  className="p-2.5 rounded-xl bg-white hover:bg-[var(--st-bg-blue-tint)] transition-all border border-[var(--st-glass-border-strong)] text-[var(--st-text-faint)] hover:text-[var(--st-text-primary)] cursor-pointer">
                   <X className="w-4 h-4" />
                 </button>
               </div>
             </div>
 
             {/* Content */}
-            <div className="flex-1 overflow-y-auto px-8 py-8 space-y-10">
+            <div className="flex-1 overflow-y-auto px-8 py-8 space-y-10 bg-white">
               {plan?.isSimulated && (
-                <div className="px-4 py-2.5 rounded-2xl text-[10px] font-bold uppercase tracking-[0.2em] flex items-center justify-center gap-3" style={{ background: 'rgba(212,165,90,0.1)', border: '1px solid rgba(212,165,90,0.2)', color: 'var(--st-accent-warning)' }}>
+                <div className="px-4 py-2.5 rounded-xl text-[10px] font-bold uppercase tracking-[0.2em] flex items-center justify-center gap-3 bg-amber-50 border border-amber-200 text-amber-800">
                   <Bot className="w-4 h-4" /> Showing Optimized Roadmap (AI Rate Limited)
                 </div>
               )}
@@ -186,62 +186,62 @@ export default function ActionPlanModal({ isOpen, onClose }: ActionPlanModalProp
               {loading && (
                 <div className="flex flex-col items-center justify-center py-24 gap-6">
                   <div className="relative">
-                    <div className="w-20 h-20 rounded-3xl flex items-center justify-center" style={{ background: 'rgba(201,169,110,0.1)', border: '1px solid rgba(201,169,110,0.2)' }}>
-                      <Loader2 className="w-10 h-10 animate-spin" style={{ color: 'var(--st-accent-gold)' }} />
+                    <div className="w-20 h-20 rounded-2xl flex items-center justify-center bg-slate-50 border border-slate-200">
+                      <Loader2 className="w-10 h-10 animate-spin text-[var(--st-accent-mocha)]" />
                     </div>
-                    <motion.div animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.6, 0.3] }} transition={{ duration: 2, repeat: Infinity }}
-                      className="absolute -inset-4 blur-2xl rounded-full" style={{ background: 'rgba(201,169,110,0.15)' }} />
+                    <motion.div animate={{ scale: [1, 1.15, 1], opacity: [0.3, 0.5, 0.3] }} transition={{ duration: 1.5, repeat: Infinity }}
+                      className="absolute -inset-4 blur-xl rounded-full bg-[rgba(10,48,84,0.05)]" />
                   </div>
                   <div className="text-center">
                     <p className="text-[15px] font-bold text-[var(--st-text-primary)] tracking-tight">Crafting your roadmap...</p>
-                    <p className="text-[12px] font-medium text-[var(--st-text-muted)] mt-1 max-w-xs mx-auto opacity-70">Analyzing your progress, documents, and upcoming deadlines</p>
+                    <p className="text-[12px] font-medium text-[var(--st-text-muted)] mt-1 max-w-xs mx-auto opacity-80">Analyzing your progress, documents, and upcoming deadlines</p>
                   </div>
                 </div>
               )}
 
               {error && !loading && (
                 <div className="flex flex-col items-center justify-center py-20 gap-6">
-                  <div className="w-16 h-16 rounded-3xl flex items-center justify-center" style={{ background: 'rgba(196,122,106,0.1)', border: '1px solid rgba(196,122,106,0.2)' }}>
-                    <AlertTriangle className="w-8 h-8" style={{ color: 'var(--st-accent-danger)' }} />
+                  <div className="w-16 h-16 rounded-2xl flex items-center justify-center bg-rose-50 border border-rose-200">
+                    <AlertTriangle className="w-8 h-8 text-[var(--st-accent-danger)]" />
                   </div>
                   <div className="text-center">
                     <p className="text-[15px] font-bold text-[var(--st-text-primary)]">Generation Failed</p>
-                    <p className="text-[12px] font-medium text-[var(--st-text-muted)] mt-1 max-w-sm mx-auto opacity-70">{error}</p>
+                    <p className="text-[12px] font-medium text-[var(--st-text-muted)] mt-1 max-w-sm mx-auto opacity-80">{error}</p>
                   </div>
-                  <button onClick={generatePlan} className="btn-glass-primary px-6 py-2.5 text-xs uppercase tracking-widest">Try Again</button>
+                  <button onClick={generatePlan} className="btn-primary px-6 py-2.5 text-xs uppercase tracking-widest cursor-pointer">Try Again</button>
                 </div>
               )}
 
               {plan && !loading && (
                 <>
-                  <div className="p-6 rounded-2xl border border-[var(--st-glass-border)] relative overflow-hidden" style={{ background: 'var(--st-glass-surface)' }}>
-                    <div className="absolute top-0 left-0 w-1 h-full" style={{ background: 'linear-gradient(180deg, #C9A96E, #8B7355)' }} />
-                    <p className="text-[15px] font-bold text-[var(--st-text-primary)] leading-relaxed mb-3">{plan.greeting}</p>
-                    <p className="text-[13px] font-medium text-[var(--st-text-secondary)] leading-relaxed opacity-80">{plan.summary}</p>
+                  <div className="p-6 rounded-xl border border-[var(--st-glass-border)] bg-slate-50 relative overflow-hidden">
+                    <div className="absolute top-0 left-0 w-1.5 h-full bg-[var(--st-accent-gold)]" />
+                    <p className="text-[15px] font-bold text-[var(--st-text-primary)] leading-relaxed mb-2">{plan.greeting}</p>
+                    <p className="text-sm font-medium text-[var(--st-text-secondary)] leading-relaxed opacity-90">{plan.summary}</p>
                   </div>
 
                   <div className="space-y-6">
                     <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-[var(--st-text-faint)] flex items-center gap-3">
-                      <Calendar className="w-4 h-4" /> 7-Day Strategic Action Plan
+                      <Calendar className="w-4 h-4 text-[var(--st-accent-gold)]" /> 7-Day Strategic Action Plan
                     </h3>
                     <div className="space-y-4">
                       {plan.dailyPlan.map((day, dayIndex) => (
                         <div key={day.day}
-                          className={`rounded-2xl border transition-all duration-300 overflow-hidden
-                            ${expandedDay === dayIndex ? 'border-[var(--st-accent-gold)]/30 shadow-md' : 'border-[var(--st-glass-border)] hover:border-[var(--st-accent-gold)]/20'}
+                          className={`rounded-xl border transition-all duration-300 overflow-hidden
+                            ${expandedDay === dayIndex ? 'border-[var(--st-accent-gold)]/50 shadow-sm' : 'border-[var(--st-glass-border)] hover:border-[var(--st-accent-gold)]/30'}
                           `}
-                          style={expandedDay === dayIndex ? { background: 'var(--st-glass-surface-hover)' } : { background: 'var(--st-glass-surface)' }}
+                          style={expandedDay === dayIndex ? { background: 'var(--st-bg-blue-tint)' } : { background: '#FFFFFF' }}
                         >
-                          <button onClick={() => setExpandedDay(expandedDay === dayIndex ? null : dayIndex)} className="w-full flex items-center justify-between px-6 py-5">
+                          <button onClick={() => setExpandedDay(expandedDay === dayIndex ? null : dayIndex)} className="w-full flex items-center justify-between px-6 py-5 cursor-pointer">
                             <div className="flex items-center gap-4">
-                              <div className="w-8 h-8 rounded-xl flex items-center justify-center text-xs font-bold transition-colors"
-                                style={expandedDay === dayIndex ? { background: 'linear-gradient(135deg, #C9A96E, #8B7355)', color: 'white', boxShadow: '0 4px 12px rgba(201,169,110,0.3)' } : { background: 'var(--st-glass-surface)', border: '1px solid var(--st-glass-border)', color: 'var(--st-text-faint)' }}>
+                              <div className="w-8 h-8 rounded-lg flex items-center justify-center text-xs font-bold transition-all shadow-sm"
+                                style={expandedDay === dayIndex ? { background: 'var(--st-gradient-hero)', color: 'white' } : { background: 'var(--st-bg-warm)', border: '1px solid var(--st-glass-border)', color: 'var(--st-text-faint)' }}>
                                 {day.day}
                               </div>
                               <span className="text-[14px] font-bold text-[var(--st-text-primary)] tracking-tight">{day.title}</span>
                             </div>
                             <div className="flex items-center gap-4">
-                              <span className="text-[9px] font-bold text-[var(--st-text-faint)] uppercase tracking-widest opacity-60">
+                              <span className="text-[9px] font-bold text-[var(--st-text-faint)] uppercase tracking-widest opacity-80">
                                 {day.tasks.length} task{day.tasks.length !== 1 ? 's' : ''}
                               </span>
                               {expandedDay === dayIndex ? <ChevronUp className="w-5 h-5 text-[var(--st-text-faint)]" /> : <ChevronDown className="w-5 h-5 text-[var(--st-text-faint)]" />}
@@ -251,24 +251,24 @@ export default function ActionPlanModal({ isOpen, onClose }: ActionPlanModalProp
                           <AnimatePresence>
                             {expandedDay === dayIndex && (
                               <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.3 }} className="overflow-hidden">
-                                <div className="px-6 pb-6 pt-2 space-y-4 border-t border-[var(--st-glass-border)]">
+                                <div className="px-6 pb-6 pt-2 space-y-4 border-t border-[var(--st-glass-border)] bg-white">
                                   {day.tasks.map((task, ti) => {
                                     const ps = priorityStyles[task.priority];
                                     return (
                                       <div key={ti} className="flex gap-4 pt-4 group/task">
-                                        <div className="mt-0.5 w-8 h-8 rounded-xl flex items-center justify-center shrink-0 border border-[var(--st-glass-border)] group-hover/task:border-[var(--st-accent-gold)]/20 transition-all" style={{ background: 'var(--st-glass-surface)', color: 'var(--st-text-faint)' }}>
+                                        <div className="mt-0.5 w-8 h-8 rounded-lg flex items-center justify-center shrink-0 border border-[var(--st-glass-border)] group-hover/task:border-[var(--st-accent-gold)]/40 transition-all bg-slate-50 text-[var(--st-text-faint)]">
                                           {categoryIcons[task.category] || <Zap className="w-4 h-4" />}
                                         </div>
                                         <div className="flex-1 min-w-0">
                                           <div className="flex items-center gap-3 mb-1.5">
                                             <span className="text-[14px] font-bold text-[var(--st-text-primary)]">{task.title}</span>
-                                            <span className="text-[8px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-lg" style={{ background: ps.bg, color: ps.color, border: `1px solid ${ps.border}` }}>
+                                            <span className="text-[8px] font-bold uppercase tracking-widest px-2 py-0.5 rounded" style={{ background: ps.bg, color: ps.color, border: `1px solid ${ps.border}` }}>
                                               {task.priority}
                                             </span>
                                           </div>
-                                          <p className="text-[12px] font-medium text-[var(--st-text-secondary)] leading-relaxed opacity-70">{task.description}</p>
+                                          <p className="text-[12px] font-medium text-[var(--st-text-secondary)] leading-relaxed opacity-80">{task.description}</p>
                                           <div className="flex items-center gap-2 mt-3 text-[10px] font-bold text-[var(--st-text-faint)] uppercase tracking-wider">
-                                            <Clock className="w-3.5 h-3.5" style={{ color: 'var(--st-accent-gold)' }} />
+                                            <Clock className="w-3.5 h-3.5 text-[var(--st-accent-gold)]" />
                                             {task.timeNeeded}
                                           </div>
                                         </div>
@@ -276,10 +276,10 @@ export default function ActionPlanModal({ isOpen, onClose }: ActionPlanModalProp
                                     );
                                   })}
                                   {day.tip && (
-                                    <div className="mt-6 p-4 rounded-xl flex items-start gap-3" style={{ background: 'rgba(201,169,110,0.06)', border: '1px solid rgba(201,169,110,0.12)' }}>
+                                    <div className="mt-6 p-4 rounded-xl flex items-start gap-3 bg-orange-50/40 border border-orange-100/70">
                                       <span className="text-sm">💡</span>
-                                      <p className="text-[11px] text-[var(--st-text-secondary)] leading-relaxed font-medium opacity-80">
-                                        <strong className="text-[var(--st-text-primary)] font-bold uppercase tracking-wider text-[9px] mr-2">Strategy:</strong> {day.tip}
+                                      <p className="text-[11px] text-[var(--st-text-secondary)] leading-relaxed font-medium opacity-90">
+                                        <strong className="text-[var(--st-accent-gold)] font-bold uppercase tracking-wider text-[9px] mr-2">Strategy:</strong> {day.tip}
                                       </p>
                                     </div>
                                   )}
@@ -296,14 +296,14 @@ export default function ActionPlanModal({ isOpen, onClose }: ActionPlanModalProp
                     {plan.blockers && plan.blockers.length > 0 && (
                       <div className="space-y-4">
                         <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-[var(--st-text-faint)] flex items-center gap-3">
-                          <AlertTriangle className="w-4 h-4" /> Risk Mitigation
+                          <AlertTriangle className="w-4 h-4 text-[var(--st-accent-gold)]" /> Risk Mitigation
                         </h3>
                         <div className="space-y-3">
                           {plan.blockers.map((b, i) => (
-                            <div key={i} className="p-4 rounded-xl shadow-sm" style={{ background: 'rgba(196,122,106,0.06)', border: '1px solid rgba(196,122,106,0.12)' }}>
-                              <p className="text-[11px] font-bold uppercase tracking-wider mb-2" style={{ color: 'var(--st-accent-danger)' }}>{b.issue}</p>
-                              <p className="text-[11px] font-medium text-[var(--st-text-muted)] leading-relaxed opacity-80">
-                                <span className="font-bold mr-2" style={{ color: 'var(--st-accent-success)' }}>SOLVE:</span> {b.solution}
+                            <div key={i} className="p-4 rounded-xl border border-rose-100 bg-rose-50/50 shadow-sm">
+                              <p className="text-[11px] font-bold uppercase tracking-wider mb-2 text-[var(--st-accent-danger)]">{b.issue}</p>
+                              <p className="text-[11px] font-medium text-[var(--st-text-secondary)] leading-relaxed opacity-90">
+                                <span className="font-bold mr-2 text-[var(--st-accent-success)]">SOLVE:</span> {b.solution}
                               </p>
                             </div>
                           ))}
@@ -312,10 +312,10 @@ export default function ActionPlanModal({ isOpen, onClose }: ActionPlanModalProp
                     )}
                     <div className="space-y-4">
                       <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-[var(--st-text-faint)] flex items-center gap-3">
-                        <Heart className="w-4 h-4" /> Intelligence Pulse
+                        <Heart className="w-4 h-4 text-[var(--st-accent-gold)]" /> Intelligence Pulse
                       </h3>
-                      <div className="p-5 rounded-2xl border border-[var(--st-glass-border)] flex items-start gap-4" style={{ background: 'var(--st-glass-surface)' }}>
-                        <p className="text-[12px] text-[var(--st-text-secondary)] leading-relaxed font-medium italic opacity-80">
+                      <div className="p-5 rounded-xl border border-[var(--st-glass-border)] flex items-start gap-4 bg-slate-50">
+                        <p className="text-[12px] text-[var(--st-text-secondary)] leading-relaxed font-medium italic opacity-90">
                           &quot;{plan.motivationalNote}&quot;
                         </p>
                       </div>

@@ -9,10 +9,10 @@ interface StatsGridProps {
 }
 
 const warmColors = [
-  { color: 'var(--st-accent-terracotta)', bg: 'rgba(184,124,106,0.1)', border: 'rgba(184,124,106,0.15)' },
-  { color: 'var(--st-accent-gold)', bg: 'rgba(201,169,110,0.1)', border: 'rgba(201,169,110,0.15)' },
-  { color: 'var(--st-accent-success)', bg: 'rgba(126,174,123,0.1)', border: 'rgba(126,174,123,0.15)' },
-  { color: 'var(--st-accent-mocha)', bg: 'rgba(139,115,85,0.1)', border: 'rgba(139,115,85,0.15)' },
+  { color: 'var(--st-accent-gold)', bg: 'rgba(224, 106, 59, 0.06)', border: 'rgba(224, 106, 59, 0.15)' },
+  { color: 'var(--st-accent-mocha)', bg: 'rgba(10, 48, 84, 0.05)', border: 'rgba(10, 48, 84, 0.15)' },
+  { color: 'var(--st-accent-success)', bg: 'rgba(21, 128, 61, 0.06)', border: 'rgba(21, 128, 61, 0.15)' },
+  { color: 'var(--st-accent-rose-beige)', bg: 'rgba(26, 79, 138, 0.05)', border: 'rgba(26, 79, 138, 0.15)' },
 ];
 
 export default function StatsGrid({ stats }: StatsGridProps) {

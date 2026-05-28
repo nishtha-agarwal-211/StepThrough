@@ -69,16 +69,16 @@ export default function DocumentCenter() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {documents.map((doc) => (
-            <div key={doc.id} className="glass-card p-6 flex flex-col group transition-all">
+            <div key={doc.id} className="glass-card p-6 flex flex-col group transition-all bg-white">
               <div className="flex items-start justify-between mb-6">
                 <div className="w-12 h-12 rounded-xl flex items-center justify-center text-xl"
                   style={doc.status === 'uploaded'
-                    ? { background: 'rgba(126,174,123,0.1)', color: 'var(--st-accent-success)', border: '1px solid rgba(126,174,123,0.15)' }
-                    : { background: 'var(--st-glass-surface)', color: 'var(--st-text-faint)', border: '1px solid var(--st-glass-border)' }
+                    ? { background: 'rgba(21,128,61,0.06)', color: 'var(--st-accent-success)', border: '1px solid rgba(21,128,61,0.15)' }
+                    : { background: 'var(--st-bg-blue-tint)', color: 'var(--st-text-faint)', border: '1px solid var(--st-glass-border)' }
                   }>
                   <FileText className="w-6 h-6" />
                 </div>
-                <button className="p-1.5 rounded-lg hover:bg-[var(--st-glass-surface-hover)] transition-colors text-[var(--st-text-faint)] opacity-30 group-hover:opacity-100">
+                <button className="p-1.5 rounded-lg hover:bg-[var(--st-bg-blue-tint)] transition-colors text-[var(--st-text-faint)] opacity-30 group-hover:opacity-100 cursor-pointer">
                   <MoreVertical className="w-4 h-4" />
                 </button>
               </div>
@@ -86,34 +86,34 @@ export default function DocumentCenter() {
               <div className="flex-1">
                 <h4 className="text-sm font-bold text-[var(--st-text-primary)] mb-1">{doc.name}</h4>
                 <div className="flex items-center gap-2">
-                   <span className="text-[10px] font-bold text-[var(--st-text-faint)] uppercase tracking-tight opacity-60">{doc.type}</span>
-                   <div className="w-1 h-1 rounded-full" style={{ background: 'var(--st-glass-border)' }} />
-                   <span className="text-[10px] font-bold text-[var(--st-text-faint)] uppercase tracking-tight opacity-60">PDF • 1.2MB</span>
+                   <span className="text-[10px] font-bold text-[var(--st-text-faint)] uppercase tracking-tight opacity-80">{doc.type}</span>
+                   <div className="w-1 h-1 rounded-full bg-slate-300" />
+                   <span className="text-[10px] font-bold text-[var(--st-text-faint)] uppercase tracking-tight opacity-80">PDF • 1.2MB</span>
                 </div>
               </div>
 
               <div className="mt-8 pt-6 border-t border-[var(--st-glass-border)] flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   {doc.status === 'uploaded' ? (
-                    <div className="flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-md" style={{ color: 'var(--st-accent-success)', background: 'rgba(126,174,123,0.1)' }}>
+                    <div className="flex items-center gap-1 text-[10px] font-bold px-2.5 py-0.5 rounded-md" style={{ color: 'var(--st-accent-success)', background: 'rgba(21,128,61,0.06)' }}>
                       <CheckCircle2 className="w-3 h-3" /> Verified
                     </div>
                   ) : (
-                    <div className="flex items-center gap-1 text-[10px] font-bold text-[var(--st-text-faint)] px-2 py-0.5 rounded-md border border-[var(--st-glass-border)]" style={{ background: 'var(--st-glass-surface)' }}>
+                    <div className="flex items-center gap-1 text-[10px] font-bold text-[var(--st-text-faint)] px-2.5 py-0.5 rounded-md border border-[var(--st-glass-border)] bg-slate-50">
                       <Clock className="w-3 h-3" /> Required
                     </div>
                   )}
                 </div>
                 <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-all">
-                   <button className="p-2 rounded-lg hover:bg-[var(--st-glass-surface-hover)] text-[var(--st-text-faint)] hover:text-[var(--st-text-primary)] transition-colors"><Eye className="w-4 h-4" /></button>
-                   <button className="p-2 rounded-lg hover:bg-[var(--st-glass-surface-hover)] text-[var(--st-text-faint)] hover:text-[var(--st-text-primary)] transition-colors"><Download className="w-4 h-4" /></button>
+                   <button className="p-2 rounded-lg hover:bg-[var(--st-bg-blue-tint)] text-[var(--st-text-faint)] hover:text-[var(--st-text-primary)] transition-colors cursor-pointer"><Eye className="w-4 h-4" /></button>
+                   <button className="p-2 rounded-lg hover:bg-[var(--st-bg-blue-tint)] text-[var(--st-text-faint)] hover:text-[var(--st-text-primary)] transition-colors cursor-pointer"><Download className="w-4 h-4" /></button>
                 </div>
               </div>
 
               {doc.status !== 'uploaded' && (
                 <button onClick={() => uploadDocument(doc.id)}
-                  className="mt-6 w-full py-2.5 rounded-xl text-white text-[11px] font-bold uppercase tracking-widest transition-all shadow-md"
-                  style={{ background: 'linear-gradient(135deg, #C9A96E, #8B7355)', boxShadow: '0 4px 16px rgba(201,169,110,0.25)' }}>
+                  className="mt-6 w-full py-2.5 rounded-xl text-white text-[11px] font-bold uppercase tracking-widest transition-all shadow-sm cursor-pointer"
+                  style={{ background: 'var(--st-gradient-gold)', boxShadow: '0 4px 16px rgba(224, 106, 59, 0.2)' }}>
                   Verify Now
                 </button>
               )}
@@ -123,18 +123,18 @@ export default function DocumentCenter() {
       </div>
 
       {/* Intelligence Suggestions */}
-      <section className="glass-card rounded-[32px] p-6 sm:p-10 flex flex-col md:flex-row items-center gap-6 sm:gap-10">
-         <div className="w-20 h-20 rounded-[24px] border border-[var(--st-glass-border)] flex items-center justify-center shadow-inner shrink-0" style={{ background: 'var(--st-glass-surface)' }}>
-            <Sparkles className="w-10 h-10" style={{ color: 'var(--st-accent-gold)' }} />
+      <section className="glass-card rounded-xl p-6 sm:p-10 flex flex-col md:flex-row items-center gap-6 sm:gap-10 bg-white">
+         <div className="w-20 h-20 rounded-xl border border-[var(--st-glass-border)] flex items-center justify-center shadow-inner shrink-0 bg-[var(--st-bg-blue-tint)]">
+            <Sparkles className="w-10 h-10 text-[var(--st-accent-gold)]" />
          </div>
          <div className="flex-1 space-y-2">
             <h3 className="text-xl font-bold text-[var(--st-text-primary)]">Intelligence Insight</h3>
-            <p className="text-sm text-[var(--st-text-secondary)] leading-relaxed max-w-2xl font-medium opacity-70">
+            <p className="text-sm text-[var(--st-text-secondary)] leading-relaxed max-w-2xl font-medium opacity-80">
               We detected that you have 3 scholarships requiring a <strong>Community Certificate</strong>. 
               Uploading this document now will pre-verify your eligibility for all 3 paths instantly.
             </p>
          </div>
-         <button className="btn-glass-primary py-3 px-8 text-[11px] font-bold uppercase tracking-widest shrink-0 h-12">
+         <button className="btn-liquid-gold py-3 px-8 text-[11px] font-bold uppercase tracking-widest shrink-0 h-12 cursor-pointer">
             Resolve Requirement
          </button>
       </section>

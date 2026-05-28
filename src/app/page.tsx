@@ -69,22 +69,22 @@ export default function Home() {
         <div className="flex flex-col lg:flex-row gap-12">
           {/* Main Content */}
           <div className="flex-1 space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
-            {/* Hero Header — Warm Glass */}
-            <section className="flex flex-col md:flex-row md:items-end justify-between gap-8 p-8 rounded-3xl glass-card" style={{ background: 'linear-gradient(135deg, rgba(255,255,255,0.55), rgba(255,255,255,0.35))' }}>
+            {/* Hero Header — Modern Trust Portal */}
+            <section className="flex flex-col md:flex-row md:items-center justify-between gap-8 p-8 rounded-2xl border border-[var(--st-glass-border)] bg-white shadow-sm">
               <div className="space-y-4">
                 <div className="flex items-center gap-2">
-                   <div className="px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-widest flex items-center gap-1.5" style={{ background: 'rgba(201,169,110,0.12)', color: 'var(--st-accent-mocha)' }}>
-                     <Zap className="w-3 h-3" />
-                     Live Dashboard
+                   <div className="px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-widest flex items-center gap-1.5" style={{ background: 'rgba(10,48,84,0.06)', color: 'var(--st-accent-mocha)' }}>
+                     <Zap className="w-3 h-3 text-[var(--st-accent-gold)]" />
+                     Live Discovery
                    </div>
                    <div className="h-px w-8 bg-[var(--st-glass-border)]" />
                    <span className="text-[10px] font-bold text-[var(--st-text-faint)] uppercase tracking-widest">{new Date().toLocaleDateString(undefined, { month: 'long', day: 'numeric' })}</span>
                 </div>
                 <h1 className="text-4xl md:text-5xl font-bold text-[var(--st-text-primary)] tracking-tight leading-[1.1]">
-                  System <span className="gradient-text italic">Overview</span>
+                  Citizen <span className="gradient-text">Overview</span>
                 </h1>
                 <p className="text-[var(--st-text-muted)] text-lg font-medium max-w-xl leading-relaxed">
-                  You have <span className="text-[var(--st-text-primary)] font-bold">{stats.activeJourneys} active paths</span> in synchronization. Your overall impact score has increased by 14% this week.
+                  You have <span className="text-[var(--st-accent-gold)] font-extrabold">{stats.activeJourneys} active roadmap{stats.activeJourneys > 1 ? 's' : ''}</span> in sync. Your scheme eligibility score is verified.
                 </p>
               </div>
 
@@ -92,19 +92,19 @@ export default function Home() {
                 whileHover={{ scale: 1.02, y: -2 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => setIsActionPlanOpen(true)}
-                className="text-white h-14 px-8 rounded-2xl flex items-center gap-3 font-semibold group transition-all shadow-lg"
-                style={{ background: 'linear-gradient(135deg, #C9A96E, #8B7355)', boxShadow: '0 8px 24px rgba(201,169,110,0.3)' }}
+                className="text-white h-14 px-8 rounded-xl flex items-center gap-3 font-semibold group transition-all shadow-sm cursor-pointer"
+                style={{ background: 'var(--st-gradient-gold)', boxShadow: '0 4px 14px rgba(224, 106, 59, 0.2)' }}
               >
                 <Sparkles className="w-5 h-5 transition-transform group-hover:rotate-12" />
-                Optimization Plan
-                <ArrowRight className="w-4 h-4 opacity-40 group-hover:opacity-100 transition-all group-hover:translate-x-1" />
+                Eligibility Summary
+                <ArrowRight className="w-4 h-4 opacity-75 group-hover:opacity-100 transition-all group-hover:translate-x-1" />
               </motion.button>
             </section>
 
             {/* Metrics */}
             <section className="space-y-6">
               <div className="flex items-center justify-between">
-                 <h2 className="section-label">Performance Metrics</h2>
+                 <h2 className="section-label">Performance & Match Metrics</h2>
               </div>
               <StatsGrid stats={stats} />
             </section>
@@ -114,11 +114,11 @@ export default function Home() {
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <h2 className="text-lg font-bold text-[var(--st-text-primary)]">Active Roadmaps</h2>
-                  <span className="text-[var(--st-text-faint)] text-[10px] font-bold px-2 py-1 rounded-md border border-[var(--st-glass-border)] bg-[var(--st-glass-surface)]">{journeys.length}</span>
+                  <span className="text-[var(--st-text-faint)] text-[10px] font-bold px-2 py-1 rounded-md border border-[var(--st-glass-border)] bg-[var(--st-bg-blue-tint)]">{journeys.length}</span>
                 </div>
                 <button 
                   onClick={() => setCurrentPage('journey')}
-                  className="text-[11px] font-bold text-[var(--st-text-faint)] hover:text-[var(--st-text-primary)] uppercase tracking-widest transition-colors"
+                  className="text-[11px] font-bold text-[var(--st-accent-gold)] hover:text-[#C24E22] hover:underline uppercase tracking-widest transition-colors cursor-pointer"
                 >
                   Manage All
                 </button>
@@ -142,15 +142,15 @@ export default function Home() {
             <section className="space-y-6">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <h2 className="text-lg font-bold text-[var(--st-text-primary)]">Recommended Discovery</h2>
-                  <div className="flex items-center gap-1.5 px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider" style={{ background: 'rgba(126,174,123,0.12)', color: 'var(--st-accent-success)' }}>
+                  <h2 className="text-lg font-bold text-[var(--st-text-primary)]">Recommended for You</h2>
+                  <div className="flex items-center gap-1.5 px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider bg-emerald-50 border border-emerald-100 text-emerald-700">
                      <CheckCircle2 className="w-2.5 h-2.5" />
-                     98% Match
+                     98% Match Confirmed
                   </div>
                 </div>
                 <button 
                   onClick={() => setCurrentPage('explore')}
-                  className="text-[11px] font-bold text-[var(--st-text-faint)] hover:text-[var(--st-text-primary)] uppercase tracking-widest transition-colors"
+                  className="text-[11px] font-bold text-[var(--st-accent-gold)] hover:text-[#C24E22] hover:underline uppercase tracking-widest transition-colors cursor-pointer"
                 >
                   Expand Library
                 </button>
@@ -179,7 +179,7 @@ export default function Home() {
                 <div className="flex items-center justify-between">
                   <h2 className="text-sm font-bold text-[var(--st-text-primary)] flex items-center gap-2">
                     <Calendar className="w-4 h-4 text-[var(--st-accent-gold)]" />
-                    Intelligent Feed
+                    Action Feed
                   </h2>
                   <span className="w-2 h-2 rounded-full bg-[var(--st-accent-success)]" />
                 </div>
@@ -190,18 +190,18 @@ export default function Home() {
                 </div>
               </section>
 
-              {/* Milestone Tracker — Warm Gradient */}
-              <section className="rounded-3xl p-8 overflow-hidden relative group" style={{ background: 'linear-gradient(135deg, #8B7355, #6B5A45)' }}>
+              {/* Milestone Tracker — Deep Navy Trust Layer */}
+              <section className="rounded-2xl p-8 overflow-hidden relative group text-white border border-slate-800" style={{ background: 'var(--st-gradient-hero)' }}>
                 <div className="relative z-10 space-y-6">
                   <h2 className="text-sm font-bold flex items-center gap-2 text-white/70">
-                    <Sparkles className="w-4 h-4 text-[var(--st-accent-gold)]" />
-                    System Milestone
+                    <Sparkles className="w-4 h-4 text-[var(--st-accent-gold)] animate-spin-slow" />
+                    Verification Milestone
                   </h2>
                   
                   <div className="space-y-4">
                     <div className="space-y-2">
-                       <p className="text-lg font-bold leading-tight text-white">Verification Level 4</p>
-                       <p className="text-xs text-white/50 leading-relaxed font-medium">Complete the document audit to unlock secondary government funding channels.</p>
+                       <p className="text-lg font-bold leading-tight">Verification Level 4</p>
+                       <p className="text-xs text-white/70 leading-relaxed font-medium">Upload domicile certificate and passbook to unlock premium central scholarships.</p>
                     </div>
                     
                     <div className="pt-4">
@@ -214,7 +214,7 @@ export default function Home() {
                           initial={{ width: 0 }}
                           animate={{ width: '74%' }}
                           className="h-full rounded-full" 
-                          style={{ background: 'linear-gradient(90deg, #C9A96E, #D4B88A)' }}
+                          style={{ background: 'var(--st-gradient-gold)' }}
                         />
                       </div>
                     </div>
@@ -222,7 +222,7 @@ export default function Home() {
                 </div>
                 
                 {/* Background Decoration */}
-                <div className="absolute top-0 right-0 w-32 h-32 blur-3xl -mr-16 -mt-16 group-hover:opacity-40 transition-all" style={{ background: 'rgba(201,169,110,0.25)' }} />
+                <div className="absolute top-0 right-0 w-32 h-32 blur-3xl -mr-16 -mt-16 group-hover:opacity-40 transition-all" style={{ background: 'rgba(224, 106, 59, 0.2)' }} />
               </section>
             </div>
           </aside>

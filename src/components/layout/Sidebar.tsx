@@ -43,10 +43,10 @@ export default function Sidebar() {
         `}
       >
         {/* Logo Section */}
-        <div className="flex items-center h-16 px-6 shrink-0">
+        <div className="flex items-center h-16 px-6 shrink-0 border-b border-[var(--st-glass-border)]">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg flex items-center justify-center shadow-lg shrink-0" style={{ background: 'linear-gradient(135deg, #C9A96E, #8B7355)' }}>
-              <Zap className="w-4 h-4 text-white" />
+            <div className="w-8 h-8 rounded-lg flex items-center justify-center shadow-md shrink-0 animate-pulse" style={{ background: 'var(--st-gradient-hero)' }}>
+              <Zap className="w-4 h-4 text-[var(--st-accent-gold)]" />
             </div>
             {isSidebarOpen && (
               <span className="font-bold text-lg tracking-tight text-[var(--st-text-primary)]">
@@ -59,7 +59,7 @@ export default function Sidebar() {
         {/* Navigation */}
         <div className="flex-1 px-3 py-6 space-y-8 overflow-y-auto">
           <div>
-            {isSidebarOpen && <span className="section-label px-3 mb-4 block opacity-50">Navigation</span>}
+            {isSidebarOpen && <span className="section-label px-3 mb-4 block opacity-60">Navigation</span>}
             <nav className="space-y-1">
               {navItems.map((item) => {
                 const isActive = currentPage === item.id;
@@ -71,7 +71,7 @@ export default function Sidebar() {
                       if (window.innerWidth < 768) toggleSidebar(); 
                     }}
                     className={`w-full nav-item-glass group relative
-                      ${isActive ? 'active' : 'hover:bg-[rgba(201,169,110,0.06)]'}
+                      ${isActive ? 'active' : 'hover:bg-[rgba(10,48,84,0.04)]'}
                       ${!isSidebarOpen ? 'justify-center px-0' : ''}
                     `}
                   >
@@ -82,7 +82,7 @@ export default function Sidebar() {
                       </span>
                     )}
                     {isActive && !isSidebarOpen && (
-                      <motion.div layoutId="active-pill" className="absolute right-0 w-1 h-6 rounded-l-full" style={{ background: 'linear-gradient(135deg, #C9A96E, #8B7355)' }} />
+                      <motion.div layoutId="active-pill" className="absolute right-0 w-1.5 h-6 rounded-l-full animate-fade" style={{ background: 'var(--st-gradient-gold)' }} />
                     )}
                   </button>
                 );
@@ -92,11 +92,11 @@ export default function Sidebar() {
         </div>
 
         {/* User Account Section */}
-        <div className="p-4 mt-auto">
+        <div className="p-4 mt-auto border-t border-[var(--st-glass-border)] bg-[var(--st-bg-blue-tint)]">
           <div className={`flex items-center gap-3 p-2 rounded-xl transition-all
-            ${isSidebarOpen ? 'hover:bg-[rgba(201,169,110,0.06)]' : 'justify-center'}
+            ${isSidebarOpen ? 'hover:bg-[rgba(10,48,84,0.06)]' : 'justify-center'}
           `}>
-            <div className="w-9 h-9 rounded-lg flex items-center justify-center text-xs font-bold text-[var(--st-text-on-accent)] shrink-0 shadow-sm" style={{ background: 'linear-gradient(135deg, #C9A96E, #D4B88A)' }}>
+            <div className="w-9 h-9 rounded-lg flex items-center justify-center text-xs font-bold text-[var(--st-text-on-accent)] shrink-0 shadow-sm" style={{ background: 'var(--st-gradient-hero)' }}>
               {user?.name?.charAt(0) || 'U'}
             </div>
             {isSidebarOpen && (
@@ -104,14 +104,14 @@ export default function Sidebar() {
                 <p className="text-sm font-semibold text-[var(--st-text-primary)] truncate">{user?.name}</p>
                 <div className="flex items-center gap-1.5">
                    <div className="w-1.5 h-1.5 rounded-full bg-[var(--st-accent-success)]" />
-                   <p className="text-[10px] text-[var(--st-text-faint)] font-medium uppercase tracking-wider">Pro Tier</p>
+                   <p className="text-[10px] text-[var(--st-text-faint)] font-bold uppercase tracking-wider">Citizen</p>
                 </div>
               </div>
             )}
             {isSidebarOpen && (
                <button 
                  onClick={logout}
-                 className="p-1.5 text-[var(--st-text-faint)] hover:text-[var(--st-accent-danger)] hover:bg-[rgba(196,122,106,0.1)] rounded-md transition-all"
+                 className="p-1.5 text-[var(--st-text-faint)] hover:text-[var(--st-accent-danger)] hover:bg-rose-50 rounded-md transition-all"
                >
                  <LogOut className="w-4 h-4" />
                </button>
